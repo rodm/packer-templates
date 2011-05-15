@@ -1,0 +1,23 @@
+name: mysql
+summary: MySQL appliance
+version: 1
+release: 0
+os:
+  name: centos
+  version: 5
+  password: admin123
+hardware:
+  cpus: 2
+  memory: 512
+  partitions:
+    "/":
+      size: 2
+    "/var/lib/mysql":
+      size: 10
+packages:
+  includes:
+   - mysql-server
+post:
+  base:
+    - "/sbin/chkconfig --level 234 mysqld on"
+
