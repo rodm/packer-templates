@@ -1,0 +1,15 @@
+name: appserver
+summary: Application server appliance
+os:
+  name: centos
+  version: 5
+  password: admin123
+hardware:
+  cpus: 2
+  memory: 1024
+  partitions:
+    "/":
+      size: 4
+packages:
+  - @core
+
