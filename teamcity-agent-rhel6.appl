@@ -1,0 +1,16 @@
+name: teamcity-agent-rhel6
+summary: TeamCity Build Agent running on RHEL 6
+os:
+  name: rhel
+  version: 6
+  password: admin123
+appliances:
+  - teamcity-agent-base
+repos:
+  - name: "rhel6-noarch"
+    baseurl: "file:///media/cdrom/Server"
+    ephemeral: true
+  - name: "rhel6-#BASE_ARCH#"
+    baseurl: "file:///media/cdrom/Server"
+    ephemeral: true
+

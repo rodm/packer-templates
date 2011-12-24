@@ -1,0 +1,9 @@
+name: teamcity-agent-centos5
+summary: TeamCity Build Agent running on CentOS 5
+os:
+  name: centos
+  version: 5
+  password: admin123
+appliances:
+  - teamcity-agent-base
+

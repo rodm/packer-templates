@@ -1,0 +1,23 @@
+name: teamcity-agent-base
+hardware:
+  cpus: 2
+  memory: 1024
+  partitions:
+    "/":
+      size: 4
+    "swap":
+      size: 0.5
+packages:
+  - @core
+  - teamcity-agent
+post:
+  base:
+    - "/sbin/chkconfig --level 234 teamcity-agent on"
+repos:
+  - name: "local-noarch"
+    baseurl: "file:///opt/repo/RPMS/noarch"
+    ephemeral: true
+  - name: "local-#ARCH#"
+    baseurl: "file:///opt/repo/RPMS/#ARCH#"
+    ephemeral: true
+
