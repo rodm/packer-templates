@@ -1,12 +1,18 @@
 #!/bin/sh
 
+# Load up the release information
+. /etc/lsb-release
+
 # Vagrant specific
 date > /etc/vagrant_box_build_time
 
 # Setup sudo to allow no-password sudo
 sed -i -e 's/%admin .*/%admin ALL=(ALL) NOPASSWD:ALL/' /etc/sudoers
+if [ "${DISTRIB_CODENAME}" = "precise" ]; then
+    sed -i -e '/Defaults\s\+env_reset/a Defaults\texempt_group=admin' /etc/sudoers
+fi
 groupadd -r admin
-useradd -a -G admin vagrant
+usermod -a -G admin vagrant
 
 # Installing vagrant keys
 mkdir /home/vagrant/.ssh
