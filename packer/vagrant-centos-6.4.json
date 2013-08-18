@@ -5,7 +5,7 @@
       "guest_os_type": "RedHat_64",
       "iso_checksum": "4a5fa01c81cc300f4729136e28ebe600",
       "iso_checksum_type": "md5",
-      "iso_url": "file:///Volumes/Software3/centos/CentOS-6.4-x86_64-minimal.iso",
+      "iso_url": "file:///Volumes/Software/centos/CentOS-6.4-x86_64-minimal.iso",
       "guest_additions_url": "file:///Volumes/Software/virtualbox/4.2/VBoxGuestAdditions_4.2.16.iso",
       "guest_additions_sha256": "cf2b0722da984a5f41a7814ee288262cbdf4c785630b2a7726c3daa6c5caa0c5",
       "http_directory": "http",
@@ -31,6 +31,11 @@
     {
       "type": "shell",
       "scripts": [
+        "scripts/base.sh",
+        "scripts/puppet.sh",
+        "scripts/vagrant.sh",
+        "scripts/virtualbox.sh",
+        "scripts/cleanup.sh",
         "scripts/zerodisk.sh"
       ],
       "override": {

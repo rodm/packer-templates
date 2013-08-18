@@ -1,18 +1,20 @@
 #!/bin/sh
 
-# Load up the release information
-. /etc/lsb-release
+# Setup sudo to allow no-password sudo
+if [ -f /etc/lsb-release ]; then
+    # Load up the release information
+    . /etc/lsb-release
+
+    sed -i -e 's/%admin .*/%admin ALL=(ALL) NOPASSWD:ALL/' /etc/sudoers
+    if [ "${DISTRIB_CODENAME}" = "precise" ]; then
+        sed -i -e '/Defaults\s\+env_reset/a Defaults\texempt_group=admin' /etc/sudoers
+    fi
+    groupadd -r admin
+    usermod -a -G admin vagrant
+fi
 
 # Vagrant specific
 date > /etc/vagrant_box_build_time
-
-# Setup sudo to allow no-password sudo
-sed -i -e 's/%admin .*/%admin ALL=(ALL) NOPASSWD:ALL/' /etc/sudoers
-if [ "${DISTRIB_CODENAME}" = "precise" ]; then
-    sed -i -e '/Defaults\s\+env_reset/a Defaults\texempt_group=admin' /etc/sudoers
-fi
-groupadd -r admin
-usermod -a -G admin vagrant
 
 # Installing vagrant keys
 mkdir /home/vagrant/.ssh
