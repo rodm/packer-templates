@@ -13,3 +13,9 @@ else
     apt-get -y autoremove
     apt-get -y clean
 fi
+
+# Make sure Udev doesn't block our network
+rm -f /etc/udev/rules.d/70-persistent-net.rules
+
+# Clean up tmp
+rm -rf /tmp/*
