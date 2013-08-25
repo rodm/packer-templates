@@ -15,7 +15,7 @@ else
 fi
 
 mkdir -p /mnt/virtualbox
-mount -o loop /home/vagrant/VBoxGuest*.iso /mnt/virtualbox
+mount -o loop /tmp/VBoxGuest*.iso /mnt/virtualbox
 sh /mnt/virtualbox/VBoxLinuxAdditions.run
 umount /mnt/virtualbox
-rm -f /home/vagrant/VBoxGuest*.iso
+rm -f /tmp/VBoxGuest*.iso
