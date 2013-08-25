@@ -16,6 +16,9 @@ fi
 
 # Make sure Udev doesn't block our network
 rm -f /etc/udev/rules.d/70-persistent-net.rules
+if [ -f /etc/redhat-release ]; then
+    sed -i -e '/HWADDR/d' /etc/sysconfig/network-scripts/ifcfg-eth0
+fi
 
 # Clean up tmp
 rm -rf /tmp/*
