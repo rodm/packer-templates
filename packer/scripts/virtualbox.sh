@@ -6,7 +6,7 @@ fi
 
 if [ -f /etc/redhat-release ]; then
     yum -y install kernel-devel-`uname -r`
-    yum -y install gcc make gcc-c++ zlib-devel openssl-devel readline-devel sqlite-devel perl wget dkms nfs-utils
+    yum -y install gcc make gcc-c++ zlib-devel openssl-devel readline-devel perl dkms nfs-utils
 else
     # ensure the correct kernel headers are installed
     apt-get -y install linux-headers-$(uname -r)
