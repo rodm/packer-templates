@@ -77,6 +77,9 @@
     }
   ],
   "post-processors": [
-    "vagrant"
+    {
+      "type": "vagrant",
+      "output": "centos-6.4-x64-{{.Provider}}.box"
+    }
   ]
 }

@@ -67,6 +67,7 @@
   "post-processors": [
     {
       "type": "vagrant",
+      "output": "ubuntu-12.04-x64-{{.Provider}}.box",
       "keep_input_artifact": false
     }
   ]
