@@ -4,6 +4,10 @@ if [ ! "`virt-what`" = "vmware" ]; then
     exit 0
 fi
 
+if [ -f /etc/redhat-release ]; then
+    yum -y install perl fuse-libs
+fi
+
 # Install the VMWare Tools from a Linux ISO.
 mkdir -p /mnt/vmware
 mount -o loop /tmp/linux.iso /mnt/vmware
