@@ -3,9 +3,9 @@
     {
       "type": "virtualbox",
       "guest_os_type": "Ubuntu_64",
-      "iso_url": "file:///Volumes/Software/ubuntu/ubuntu-12.04.2-server-amd64.iso",
+      "iso_url": "file:///Volumes/Software/ubuntu/ubuntu-12.04.3-server-amd64.iso",
       "iso_checksum_type": "md5",
-      "iso_checksum": "af5f788aee1b32c4b2634734309cc9e9",
+      "iso_checksum": "2cbe868812a871242cdcdd8f2fd6feb9",
       "guest_additions_url": "file:///Volumes/Software/virtualbox/4.2/VBoxGuestAdditions_4.2.16.iso",
       "guest_additions_sha256": "cf2b0722da984a5f41a7814ee288262cbdf4c785630b2a7726c3daa6c5caa0c5",
       "guest_additions_path": "/tmp/VBoxGuestAdditions_4.2.16.iso",
