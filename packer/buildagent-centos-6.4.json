@@ -1,0 +1,81 @@
+{
+  "builders": [
+    {
+      "type": "virtualbox",
+      "guest_os_type": "RedHat_64",
+      "iso_checksum": "4a5fa01c81cc300f4729136e28ebe600",
+      "iso_checksum_type": "md5",
+      "iso_url": "file:///Volumes/Software/centos/CentOS-6.4-x86_64-minimal.iso",
+      "guest_additions_url": "file:///Volumes/Software/virtualbox/4.2/VBoxGuestAdditions_4.2.18.iso",
+      "guest_additions_sha256": "f11a7f13dfe7bf9f246fb877144bb467fe6deadcd876568ec79b6ccd3b59d767",
+      "guest_additions_path": "/tmp/VBoxGuestAdditions_4.2.18.iso",
+      "http_directory": "http",
+      "headless": false,
+      "boot_wait": "10s",
+      "boot_command": [
+        "<tab> text ks=http://{{.HTTPIP}}:{{.HTTPPort}}/buildagent-centos-6.4-ks.cfg<enter><wait>"
+      ],
+      "disk_size": 8000,
+      "ssh_username": "builder",
+      "ssh_password": "builder",
+      "ssh_port": 22,
+      "ssh_wait_timeout": "2400s",
+      "shutdown_command": "echo '/sbin/halt -h -p' > /tmp/shutdown.sh; echo 'builder'|sudo -S sh '/tmp/shutdown.sh'",
+      "virtualbox_version_file": ".vbox_version",
+      "vboxmanage": [
+        [ "modifyvm", "{{.Name}}", "--memory", "512" ],
+        [ "modifyvm", "{{.Name}}", "--cpus", "2" ]
+      ]
+    },
+    {
+      "type": "vmware",
+      "guest_os_type": "centos-64",
+      "iso_checksum": "4a5fa01c81cc300f4729136e28ebe600",
+      "iso_checksum_type": "md5",
+      "iso_url": "file:///Volumes/Software/centos/CentOS-6.4-x86_64-minimal.iso",
+      "tools_upload_flavor": "linux",
+      "tools_upload_path" : "/tmp/{{.Flavor}}.iso",
+      "http_directory": "http",
+      "headless": false,
+      "boot_wait": "10s",
+      "boot_command": [
+        "<tab> text ks=http://{{.HTTPIP}}:{{.HTTPPort}}/buildagent-centos-6.4-ks.cfg<enter><wait>"
+      ],
+      "disk_size": 8000,
+      "disk_type_id": "4",
+      "ssh_username": "builder",
+      "ssh_password": "builder",
+      "ssh_port": 22,
+      "ssh_wait_timeout": "2400s",
+      "shutdown_command": "echo '/sbin/halt -h -p' > /tmp/shutdown.sh; echo 'builder'|sudo -S sh '/tmp/shutdown.sh'",
+      "vm_name": "buildagent",
+      "vmdk_name": "disk",
+      "vmx_data": {
+        "memsize": "512",
+        "numvcpus": "2",
+        "cpuid.coresPerSocket": "1"
+      }
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "scripts": [
+        "scripts/base.sh",
+        "scripts/puppet.sh",
+        "scripts/virtualbox.sh",
+        "scripts/vmware.sh",
+        "scripts/cleanup.sh",
+        "scripts/zerodisk.sh"
+      ],
+      "override": {
+        "virtualbox": {
+          "execute_command": "echo 'builder'|sudo -S sh '{{.Path}}'"
+        },
+        "vmware": {
+          "execute_command": "echo 'builder'|sudo -S sh '{{.Path}}'"
+        }
+      }
+    }
+  ]
+}
