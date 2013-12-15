@@ -1,0 +1,58 @@
+{
+  "builders": [
+    {
+      "type": "vmware",
+      "guest_os_type": "vmkernel5",
+      "iso_checksum": "9aaa9e0daa424a7021c7dc13db7b9409",
+      "iso_checksum_type": "md5",
+      "iso_url": "file:///Volumes/Software/vmware/esxi/VMware-VMvisor-Installer-5.5.0-1331820.x86_64.iso",
+      "http_directory": "http",
+      "headless": false,
+      "boot_wait": "15s",
+      "boot_command": [
+        "O<wait>",
+        " ks=http://{{.HTTPIP}}:{{.HTTPPort}}/vagrant-esxi-5.5-ks.cfg<enter><wait>"
+      ],
+      "disk_type_id": "0",
+      "disk_size": 20140,
+      "ssh_username": "root",
+      "ssh_password": "vagrant",
+      "ssh_port": 22,
+      "ssh_wait_timeout": "20m",
+      "shutdown_command": "/bin/halt",
+      "vm_name": "esxi55",
+      "vmdk_name": "esxi55",
+      "vmx_data": {
+        "memsize": "4096",
+        "numvcpus": "2",
+        "cpuid.coresPerSocket": "2",
+        "vhv.enable": "TRUE",
+        "RemoteDisplay.vnc.webSocket.port": "6550"
+      }
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "inline": [
+        "esxcli system settings advanced set -o /Net/FollowHardwareMac -i 1"
+      ]
+    },
+    {
+      "type": "file",
+      "source": "local.sh",
+      "destination": "/etc/rc.local.d/local.sh"
+    },
+    {
+      "type": "file",
+      "source": "vagrant.pub",
+      "destination": "/etc/ssh/keys-root/authorized_keys"
+    }
+  ],
+  "post-processors": [
+    {
+      "type": "vagrant",
+      "output": "esxi-5.5-{{.Provider}}.box"
+    }
+  ]
+}
