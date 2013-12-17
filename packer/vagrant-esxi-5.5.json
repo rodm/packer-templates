@@ -34,8 +34,8 @@
   "provisioners": [
     {
       "type": "shell",
-      "inline": [
-        "esxcli system settings advanced set -o /Net/FollowHardwareMac -i 1"
+      "scripts": [
+        "scripts/esxi.sh"
       ]
     },
     {
