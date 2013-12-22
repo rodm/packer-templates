@@ -1,6 +1,0 @@
-name: teamcity-agent-rhel6
-summary: TeamCity Build Agent running on RHEL 6
-appliances:
-  - teamcity-agent-base
-  - rhel6-base
-

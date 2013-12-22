@@ -1,6 +1,0 @@
-name: teamcity-agent-centos5
-summary: TeamCity Build Agent running on CentOS 5
-appliances:
-  - teamcity-agent-base
-  - centos5-base
-

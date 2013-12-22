@@ -1,5 +1,0 @@
-name: centos5-base
-os:
-  name: centos
-  version: 5
-
