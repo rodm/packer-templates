@@ -1,7 +1,7 @@
 {
   "builders": [
     {
-      "type": "vmware",
+      "type": "vmware-iso",
       "guest_os_type": "vmkernel5",
       "iso_checksum": "9aaa9e0daa424a7021c7dc13db7b9409",
       "iso_checksum_type": "md5",
