@@ -1,0 +1,117 @@
+{
+  "builders": [
+    {
+      "type": "virtualbox-iso",
+      "guest_os_type": "Ubuntu_64",
+      "iso_url": "file:///Volumes/Software/ubuntu/ubuntu-14.04-beta2-server-amd64.iso",
+      "iso_checksum_type": "md5",
+      "iso_checksum": "435d1e7d8425ec7332ceaeb0d7f04664",
+      "guest_additions_url": "file:///Volumes/Software/virtualbox/4.3/VBoxGuestAdditions_4.3.8.iso",
+      "guest_additions_sha256": "a1e58f3a15cab81b82424c6382a490bb02377d78d537a57538692fa83ce448c7",
+      "guest_additions_path": "/tmp/VBoxGuestAdditions_4.3.8.iso",
+      "http_directory": "http",
+      "headless": false,
+      "boot_wait": "10s",
+      "boot_command": [
+        "<esc><wait>",
+        "<esc><wait>",
+        "<enter><wait>",
+        "/install/vmlinuz <wait>",
+        "auto ",
+        "console-setup/ask_detect=false ",
+        "debconf/frontend=noninteractive ",
+        "debian-installer=en_US ",
+        "fb=false ",
+        "hostname={{.Name}} ",
+        "initrd=/install/initrd.gz ",
+        "kbd-chooser/method=us ",
+        "keyboard-configuration/modelcode=SKIP ",
+        "keyboard-configuration/layout=USA ",
+        "keyboard-configuration/variant=USA ",
+        "locale=en_US ",
+        "noapic ",
+        "preseed/url=http://{{.HTTPIP}}:{{.HTTPPort}}/buildagent-ubuntu-14.04-preseed.cfg<wait>",
+        " -- <enter>"
+      ],
+      "disk_size": 8000,
+      "ssh_username": "builder",
+      "ssh_password": "builder",
+      "ssh_port": 22,
+      "ssh_wait_timeout": "600s",
+      "shutdown_command": "echo 'shutdown -P now' > shutdown.sh; echo 'builder'|sudo -S sh 'shutdown.sh'",
+      "virtualbox_version_file": ".vbox_version",
+      "vboxmanage": [
+        [ "modifyvm", "{{.Name}}", "--memory", "384" ],
+        [ "modifyvm", "{{.Name}}", "--cpus", "2" ]
+      ]
+    },
+    {
+      "type": "vmware-iso",
+      "guest_os_type": "ubuntu-64",
+      "iso_url": "file:///Volumes/Software/ubuntu/ubuntu-14.04-beta2-server-amd64.iso",
+      "iso_checksum_type": "md5",
+      "iso_checksum": "435d1e7d8425ec7332ceaeb0d7f04664",
+      "tools_upload_flavor": "linux",
+      "tools_upload_path" : "/tmp/{{.Flavor}}.iso",
+      "http_directory": "http",
+      "headless": false,
+      "boot_wait": "10s",
+      "boot_command": [
+        "<esc><wait>",
+        "<esc><wait>",
+        "<enter><wait>",
+        "/install/vmlinuz <wait>",
+        "auto ",
+        "console-setup/ask_detect=false ",
+        "debconf/frontend=noninteractive ",
+        "debian-installer=en_US ",
+        "fb=false ",
+        "hostname={{.Name}} ",
+        "initrd=/install/initrd.gz ",
+        "kbd-chooser/method=us ",
+        "keyboard-configuration/modelcode=SKIP ",
+        "keyboard-configuration/layout=USA ",
+        "keyboard-configuration/variant=USA ",
+        "locale=en_US ",
+        "noapic ",
+        "preseed/url=http://{{.HTTPIP}}:{{.HTTPPort}}/buildagent-ubuntu-14.04-preseed.cfg<wait>",
+        " -- <enter>"
+      ],
+      "disk_size": 8000,
+      "disk_type_id": "4",
+      "ssh_username": "builder",
+      "ssh_password": "builder",
+      "ssh_port": 22,
+      "ssh_wait_timeout": "600s",
+      "shutdown_command": "echo 'shutdown -P now' > shutdown.sh; echo 'builder'|sudo -S sh 'shutdown.sh'",
+      "vm_name": "buildagent",
+      "vmdk_name": "disk",
+      "vmx_data": {
+        "memsize": "384",
+        "numvcpus": "2",
+        "cpuid.coresPerSocket": "1"
+      }
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "scripts": [
+        "scripts/base.sh",
+        "scripts/puppet.sh",
+        "scripts/virtualbox.sh",
+        "scripts/vmware.sh",
+        "scripts/cleanup.sh",
+        "scripts/zerodisk.sh"
+      ],
+      "override": {
+        "virtualbox-iso": {
+          "execute_command": "echo 'builder'|sudo -S sh '{{.Path}}'"
+        },
+        "vmware-iso": {
+          "execute_command": "echo 'builder'|sudo -S sh '{{.Path}}'"
+        }
+      }
+    }
+  ]
+}
