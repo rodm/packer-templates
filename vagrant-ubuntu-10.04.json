@@ -1,12 +1,15 @@
 {
+  "variables": {
+    "base_iso_url": ""
+  },
   "builders": [
     {
       "type": "virtualbox-iso",
       "guest_os_type": "Ubuntu_64",
       "iso_checksum": "9b218654cdcdf9722171648c52f8a088",
       "iso_checksum_type": "md5",
-      "iso_url": "file:///Volumes/Software/ubuntu/ubuntu-10.04.4-server-amd64.iso",
-      "guest_additions_url": "file:///Volumes/Software/virtualbox/4.3/VBoxGuestAdditions_4.3.4.iso",
+      "iso_url": "{{user `base_iso_url`}}/ubuntu-10.04.4-server-amd64.iso",
+      "guest_additions_url": "{{user `base_iso_url`}}/VBoxGuestAdditions_4.3.4.iso",
       "guest_additions_sha256": "f120793fa35050a8280eacf9c930cf8d9b88795161520f6515c0cc5edda2fe8a",
       "guest_additions_path": "/tmp/VBoxGuestAdditions_4.3.4.iso",
       "http_directory": "http",
@@ -53,7 +56,7 @@
       "guest_os_type": "ubuntu-64",
       "iso_checksum": "9b218654cdcdf9722171648c52f8a088",
       "iso_checksum_type": "md5",
-      "iso_url": "file:///Volumes/Software/ubuntu/ubuntu-10.04.4-server-amd64.iso",
+      "iso_url": "{{user `base_iso_url`}}/ubuntu-10.04.4-server-amd64.iso",
       "tools_upload_flavor": "linux",
       "tools_upload_path" : "/tmp/{{.Flavor}}.iso",
       "http_directory": "http",
