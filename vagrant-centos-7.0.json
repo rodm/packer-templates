@@ -1,0 +1,88 @@
+{
+  "variables": {
+    "base_iso_url": ""
+  },
+  "builders": [
+    {
+      "type": "virtualbox-iso",
+      "guest_os_type": "RedHat_64",
+      "iso_checksum": "e3afe3f1121d69c40cc23f0bafa05e5d",
+      "iso_checksum_type": "md5",
+      "iso_url": "{{user `base_iso_url`}}/CentOS-7.0-1406-x86_64-Minimal.iso",
+      "guest_additions_url": "{{user `base_iso_url`}}/VBoxGuestAdditions_4.3.20.iso",
+      "guest_additions_sha256": "9ab48f44ac26a6deb374cb5fe6bad103bbf4fdf5186140e2d40ebe48bd01f3ea",
+      "guest_additions_path": "/tmp/VBoxGuestAdditions_4.3.20.iso",
+      "http_directory": "http",
+      "headless": false,
+      "boot_wait": "10s",
+      "boot_command": [
+        "<tab> text ks=http://{{.HTTPIP}}:{{.HTTPPort}}/vagrant-centos-7.0-ks.cfg<enter><wait>"
+      ],
+      "disk_size": 20480,
+      "ssh_username": "vagrant",
+      "ssh_password": "vagrant",
+      "ssh_port": 22,
+      "ssh_wait_timeout": "2400s",
+      "shutdown_command": "echo '/sbin/halt -h -p' > /tmp/shutdown.sh; echo 'vagrant'|sudo -S sh '/tmp/shutdown.sh'",
+      "virtualbox_version_file": ".vbox_version",
+      "vboxmanage": [
+        [ "modifyvm", "{{.Name}}", "--memory", "512" ],
+        [ "modifyvm", "{{.Name}}", "--cpus", "2" ]
+      ]
+    },
+    {
+      "type": "vmware-iso",
+      "guest_os_type": "centos-64",
+      "iso_checksum": "e3afe3f1121d69c40cc23f0bafa05e5d",
+      "iso_checksum_type": "md5",
+      "iso_url": "{{user `base_iso_url`}}/CentOS-7.0-1406-x86_64-Minimal.iso",
+      "tools_upload_flavor": "linux",
+      "tools_upload_path" : "/tmp/{{.Flavor}}.iso",
+      "http_directory": "http",
+      "headless": false,
+      "boot_wait": "10s",
+      "boot_command": [
+        "<tab> text ks=http://{{.HTTPIP}}:{{.HTTPPort}}/vagrant-centos-7.0-ks.cfg<enter><wait>"
+      ],
+      "disk_size": 20480,
+      "ssh_username": "vagrant",
+      "ssh_password": "vagrant",
+      "ssh_port": 22,
+      "ssh_wait_timeout": "2400s",
+      "shutdown_command": "echo '/sbin/halt -h -p' > /tmp/shutdown.sh; echo 'vagrant'|sudo -S sh '/tmp/shutdown.sh'",
+      "vmx_data": {
+        "memsize": "512",
+        "numvcpus": "2",
+        "cpuid.coresPerSocket": "1"
+      }
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "scripts": [
+        "scripts/base.sh",
+        "scripts/puppet.sh",
+        "scripts/vagrant.sh",
+        "scripts/virtualbox.sh",
+        "scripts/vmware.sh",
+        "scripts/cleanup.sh",
+        "scripts/zerodisk.sh"
+      ],
+      "override": {
+        "virtualbox-iso": {
+          "execute_command": "echo 'vagrant'|sudo -S sh '{{.Path}}'"
+        },
+        "vmware-iso": {
+          "execute_command": "echo 'vagrant'|sudo -S sh '{{.Path}}'"
+        }
+      }
+    }
+  ],
+  "post-processors": [
+    {
+      "type": "vagrant",
+      "output": "centos-7.0-x64-{{.Provider}}.box"
+    }
+  ]
+}

@@ -2,7 +2,8 @@
 
 if [ -f /etc/redhat-release ]; then
     # Prepare puppetlabs repo
-    sudo rpm -ivh http://yum.puppetlabs.com/el/6/products/i386/puppetlabs-release-6-7.noarch.rpm
+    RELEASE=`uname -a|sed -n "s/.*el\([0-9]\).*/\1/p"`
+    sudo rpm -ivh http://yum.puppetlabs.com/el/$RELEASE/products/x86_64/puppetlabs-release-$RELEASE-11.noarch.rpm
 
     # Install puppet and facter
     yum -y install puppet facter
