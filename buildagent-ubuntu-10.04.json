@@ -1,14 +1,20 @@
 {
+  "variables": {
+    "iso_url": "http://releases.ubuntu.com/10.04/ubuntu-10.04.4-server-amd64.iso",
+    "iso_checksum": "9b218654cdcdf9722171648c52f8a088",
+    "guest_additions_url": "http://download.virtualbox.org/virtualbox/4.3.20/VBoxGuestAdditions_4.3.20.iso",
+    "disk_size": "16000"
+  },
   "builders": [
     {
       "type": "virtualbox-iso",
       "guest_os_type": "Ubuntu_64",
-      "iso_checksum": "9b218654cdcdf9722171648c52f8a088",
+      "iso_url": "{{user `iso_url`}}",
       "iso_checksum_type": "md5",
-      "iso_url": "file:///Volumes/Software/ubuntu/ubuntu-10.04.4-server-amd64.iso",
-      "guest_additions_url": "file:///Volumes/Software/virtualbox/4.3/VBoxGuestAdditions_4.3.4.iso",
-      "guest_additions_sha256": "f120793fa35050a8280eacf9c930cf8d9b88795161520f6515c0cc5edda2fe8a",
-      "guest_additions_path": "/tmp/VBoxGuestAdditions_4.3.4.iso",
+      "iso_checksum": "{{user `iso_checksum`}}",
+      "guest_additions_url": "{{user `guest_additions_url`}}",
+      "guest_additions_sha256": "9ab48f44ac26a6deb374cb5fe6bad103bbf4fdf5186140e2d40ebe48bd01f3ea",
+      "guest_additions_path": "/tmp/VBoxGuestAdditions.iso",
       "http_directory": "http",
       "headless": false,
       "boot_wait": "10s",
@@ -36,7 +42,7 @@
         " -- <wait>",
         "<enter><wait>"
       ],
-      "disk_size": 8000,
+      "disk_size": "{{user `disk_size`}}",
       "ssh_username": "builder",
       "ssh_password": "builder",
       "ssh_port": 22,
@@ -44,16 +50,16 @@
       "shutdown_command": "echo 'shutdown -P now' > shutdown.sh; echo 'builder'|sudo -S sh 'shutdown.sh'",
       "virtualbox_version_file": ".vbox_version",
       "vboxmanage": [
-        [ "modifyvm", "{{.Name}}", "--memory", "384" ],
+        [ "modifyvm", "{{.Name}}", "--memory", "512" ],
         [ "modifyvm", "{{.Name}}", "--cpus", "2" ]
       ]
     },
     {
       "type": "vmware-iso",
       "guest_os_type": "ubuntu-64",
-      "iso_checksum": "9b218654cdcdf9722171648c52f8a088",
+      "iso_url": "{{user `iso_url`}}",
       "iso_checksum_type": "md5",
-      "iso_url": "file:///Volumes/Software/ubuntu/ubuntu-10.04.4-server-amd64.iso",
+      "iso_checksum": "{{user `iso_checksum`}}",
       "tools_upload_flavor": "linux",
       "tools_upload_path" : "/tmp/{{.Flavor}}.iso",
       "http_directory": "http",
@@ -83,7 +89,7 @@
         " -- <wait>",
         "<enter><wait>"
       ],
-      "disk_size": 8000,
+      "disk_size": "{{user `disk_size`}}",
       "disk_type_id": "4",
       "ssh_username": "builder",
       "ssh_password": "builder",
@@ -93,10 +99,11 @@
       "vm_name": "buildagent",
       "vmdk_name": "disk",
       "vmx_data": {
-        "memsize": "384",
-        "numvcpus": "2",
-        "cpuid.coresPerSocket": "1"
-      }
+        "memsize": "512",
+        "numvcpus": "1",
+        "cpuid.coresPerSocket": "2"
+      },
+      "output_directory": "build"
     }
   ],
   "provisioners": [
@@ -118,6 +125,13 @@
           "execute_command": "echo 'builder'|sudo -S sh '{{.Path}}'"
         }
       }
+    }
+  ],
+  "post-processors": [
+    {
+      "type": "compress",
+      "output": "buildagent-ubuntu-10.04.tar.gz",
+      "keep_input_artifact": true
     }
   ]
 }
