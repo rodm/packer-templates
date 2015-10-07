@@ -1,0 +1,68 @@
+{
+  "variables": {
+    "iso_url": "OSX_InstallESD_10.9.5_13F34.dmg",
+    "iso_checksum": "",
+    "disk_size": "20480",
+    "username": "builder",
+    "password": "builder",
+    "update_system": "true"
+  },
+  "builders": [
+    {
+      "type": "vmware-iso",
+      "guest_os_type": "darwin13-64",
+      "iso_url": "{{user `iso_url`}}",
+      "iso_checksum_type": "md5",
+      "iso_checksum": "{{user `iso_checksum`}}",
+      "tools_upload_flavor": "darwin",
+      "tools_upload_path" : "/tmp/{{.Flavor}}.iso",
+      "boot_wait": "2s",
+      "skip_compaction": true,
+      "ssh_username": "{{user `username`}}",
+      "ssh_password": "{{user `password`}}",
+      "ssh_port": 22,
+      "ssh_timeout": "90m",
+      "shutdown_command": "echo '{{user `username`}}'|sudo -S shutdown -h now",
+      "disk_size": "{{user `disk_size`}}",
+      "disk_type_id": "4",
+      "vm_name": "buildagent",
+      "vmdk_name": "disk",
+      "vmx_data": {
+        "memsize": "2048",
+        "numvcpus": "1",
+        "cpuid.coresPerSocket": "2",
+        "firmware": "efi",
+        "keyboardAndMouseProfile": "macProfile",
+        "smc.present": "TRUE",
+        "hpet0.present": "TRUE",
+        "ich7m.present": "TRUE",
+        "ehci.present": "TRUE",
+        "usb.present": "TRUE"
+      },
+      "output_directory": "build"
+    }
+  ],
+  "min_packer_version": "0.7.0",
+  "provisioners": [
+    {
+      "type": "shell",
+      "execute_command": "chmod +x {{ .Path }}; sudo {{ .Vars }} {{ .Path }}",
+      "scripts": [
+        "scripts/osx/vmware.sh",
+        "scripts/osx/network.sh",
+        "scripts/osx/system-update.sh",
+        "scripts/osx/zerodisk.sh"
+      ],
+      "environment_vars": [
+        "UPDATE_SYSTEM={{user `update_system`}}"
+      ]
+    }
+  ],
+  "post-processors": [
+    {
+      "type": "compress",
+      "output": "buildagent-osx-10.9.tar.gz",
+      "keep_input_artifact": true
+    }
+  ]
+}
