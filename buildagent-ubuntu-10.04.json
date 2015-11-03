@@ -100,7 +100,7 @@
       "vmdk_name": "disk",
       "vmx_data": {
         "memsize": "512",
-        "numvcpus": "1",
+        "numvcpus": "2",
         "cpuid.coresPerSocket": "2"
       },
       "output_directory": "build"

@@ -29,7 +29,7 @@
       "vmdk_name": "disk",
       "vmx_data": {
         "memsize": "2048",
-        "numvcpus": "1",
+        "numvcpus": "2",
         "cpuid.coresPerSocket": "2",
         "firmware": "efi",
         "keyboardAndMouseProfile": "macProfile",
