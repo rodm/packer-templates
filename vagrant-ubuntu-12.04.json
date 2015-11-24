@@ -1,17 +1,19 @@
 {
   "variables": {
-    "base_iso_url": ""
+    "iso_url": "http://releases.ubuntu.com/12.04/ubuntu-12.04.5-server-amd64.iso",
+    "iso_checksum": "769474248a3897f4865817446f9a4a53",
+    "guest_additions_url": "http://download.virtualbox.org/virtualbox/4.3.20/VBoxGuestAdditions_4.3.20.iso"
   },
   "builders": [
     {
       "type": "virtualbox-iso",
       "guest_os_type": "Ubuntu_64",
-      "iso_url": "{{user `base_iso_url`}}/ubuntu-12.04.3-server-amd64.iso",
+      "iso_url": "{{user `iso_url`}}",
       "iso_checksum_type": "md5",
-      "iso_checksum": "2cbe868812a871242cdcdd8f2fd6feb9",
-      "guest_additions_url": "{{user `base_iso_url`}}/VBoxGuestAdditions_4.3.20.iso",
+      "iso_checksum": "{{user `iso_checksum`}}",
+      "guest_additions_url": "{{user `guest_additions_url`}}",
       "guest_additions_sha256": "9ab48f44ac26a6deb374cb5fe6bad103bbf4fdf5186140e2d40ebe48bd01f3ea",
-      "guest_additions_path": "/tmp/VBoxGuestAdditions_4.3.20.iso",
+      "guest_additions_path": "/tmp/VBoxGuestAdditions.iso",
       "http_directory": "http",
       "headless": false,
       "boot_wait": "10s",
@@ -51,9 +53,9 @@
     {
       "type": "vmware-iso",
       "guest_os_type": "ubuntu-64",
-      "iso_url": "{{user `base_iso_url`}}/ubuntu-12.04-server-amd64.iso",
+      "iso_url": "{{user `iso_url`}}",
       "iso_checksum_type": "md5",
-      "iso_checksum": "f2e921788d35bbdf0336d05d228136eb",
+      "iso_checksum": "{{user `iso_checksum`}}",
       "tools_upload_flavor": "linux",
       "tools_upload_path" : "/tmp/{{.Flavor}}.iso",
       "http_directory": "http",

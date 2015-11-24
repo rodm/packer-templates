@@ -1,17 +1,19 @@
 {
   "variables": {
-    "base_iso_url": ""
+    "iso_url": "CentOS-7.0-1406-x86_64-Minimal.iso",
+    "iso_checksum": "e3afe3f1121d69c40cc23f0bafa05e5d",
+    "guest_additions_url": "http://download.virtualbox.org/virtualbox/4.3.20/VBoxGuestAdditions_4.3.20.iso"
   },
   "builders": [
     {
       "type": "virtualbox-iso",
       "guest_os_type": "RedHat_64",
-      "iso_checksum": "e3afe3f1121d69c40cc23f0bafa05e5d",
+      "iso_checksum": "{{user `iso_checksum`}}",
       "iso_checksum_type": "md5",
-      "iso_url": "{{user `base_iso_url`}}/CentOS-7.0-1406-x86_64-Minimal.iso",
-      "guest_additions_url": "{{user `base_iso_url`}}/VBoxGuestAdditions_4.3.20.iso",
+      "iso_url": "{{user `iso_url`}}",
+      "guest_additions_url": "{{user `guest_additions_url`}}",
       "guest_additions_sha256": "9ab48f44ac26a6deb374cb5fe6bad103bbf4fdf5186140e2d40ebe48bd01f3ea",
-      "guest_additions_path": "/tmp/VBoxGuestAdditions_4.3.20.iso",
+      "guest_additions_path": "/tmp/VBoxGuestAdditions.iso",
       "http_directory": "http",
       "headless": false,
       "boot_wait": "10s",
@@ -33,9 +35,9 @@
     {
       "type": "vmware-iso",
       "guest_os_type": "centos-64",
-      "iso_checksum": "e3afe3f1121d69c40cc23f0bafa05e5d",
+      "iso_checksum": "{{user `iso_checksum`}}",
       "iso_checksum_type": "md5",
-      "iso_url": "{{user `base_iso_url`}}/CentOS-7.0-1406-x86_64-Minimal.iso",
+      "iso_url": "{{user `iso_url`}}",
       "tools_upload_flavor": "linux",
       "tools_upload_path" : "/tmp/{{.Flavor}}.iso",
       "http_directory": "http",

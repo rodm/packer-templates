@@ -1,14 +1,15 @@
 {
   "variables": {
-    "base_iso_url": ""
+    "iso_url": "VMware-VMvisor-Installer-5.5.0.update02-2068190.x86_64.iso",
+    "iso_checksum": "5d109d10864ea8ad1d186a336bd26c1c",
   },
   "builders": [
     {
       "type": "vmware-iso",
       "guest_os_type": "vmkernel5",
-      "iso_checksum": "5d109d10864ea8ad1d186a336bd26c1c",
+      "iso_checksum": "{{user `iso_checksum`}}",
       "iso_checksum_type": "md5",
-      "iso_url": "{{user `base_iso_url`}}/VMware-VMvisor-Installer-5.5.0.update02-2068190.x86_64.iso",
+      "iso_url": "{{user `iso_url`}}",
       "http_directory": "http",
       "headless": false,
       "boot_wait": "15s",
