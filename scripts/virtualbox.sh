@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if [ ! "`virt-what`" = "virtualbox" ]; then
+if [ ! $PACKER_BUILDER_TYPE = virtualbox-iso -a ! $PACKER_BUILDER_TYPE = virtualbox-ovf ]; then
     exit 0
 fi
 

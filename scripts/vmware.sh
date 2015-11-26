@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if [ ! "`virt-what`" = "vmware" ]; then
+if [ ! $PACKER_BUILDER_TYPE = vmware-iso -a ! $PACKER_BUILDER_TYPE = vmware-vmx ]; then
     exit 0
 fi
 
