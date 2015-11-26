@@ -78,10 +78,10 @@
       ],
       "override": {
         "virtualbox-iso": {
-          "execute_command": "echo 'builder'|sudo -S sh '{{.Path}}'"
+          "execute_command": "echo 'builder' | {{.Vars}} sudo -E -S sh '{{.Path}}'"
         },
         "vmware-iso": {
-          "execute_command": "echo 'builder'|sudo -S sh '{{.Path}}'"
+          "execute_command": "echo 'builder' | {{.Vars}} sudo -E -S sh '{{.Path}}'"
         }
       }
     }
