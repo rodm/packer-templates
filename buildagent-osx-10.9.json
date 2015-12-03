@@ -11,6 +11,7 @@
     {
       "type": "vmware-iso",
       "guest_os_type": "darwin13-64",
+      "version": "10",
       "iso_url": "{{user `iso_url`}}",
       "iso_checksum_type": "md5",
       "iso_checksum": "{{user `iso_checksum`}}",
