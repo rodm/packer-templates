@@ -41,21 +41,21 @@
       "output_directory": "build"
     },
     {
-      "boot_wait": "2s",
-      "disk_size": 20480,
-      "guest_additions_mode": "disable",
-      "guest_os_type": "MacOS109_64",
-      "hard_drive_interface": "sata",
+      "type": "virtualbox-iso",
+      "guest_os_type": "MacOS1010_64",
+      "iso_url": "{{user `iso_url`}}",
       "iso_checksum_type": "md5",
       "iso_checksum": "{{user `iso_checksum`}}",
-      "iso_interface": "sata",
-      "iso_url": "{{user `iso_url`}}",
-      "shutdown_command": "echo '{{user `username`}}'|sudo -S shutdown -h now",
-      "ssh_port": 22,
+      "guest_additions_mode": "disable",
+      "boot_wait": "2s",
       "ssh_username": "{{user `username`}}",
       "ssh_password": "{{user `password`}}",
-      "ssh_wait_timeout": "10000s",
-      "type": "virtualbox-iso",
+      "ssh_port": 22,
+      "ssh_wait_timeout": "90m",
+      "shutdown_command": "echo '{{user `username`}}'|sudo -S shutdown -h now",
+      "disk_size": "{{user `disk_size`}}",
+      "hard_drive_interface": "sata",
+      "iso_interface": "sata",
       "vboxmanage": [
         ["modifyvm", "{{.Name}}", "--audiocontroller", "hda"],
         ["modifyvm", "{{.Name}}", "--boot1", "dvd"],
@@ -68,7 +68,8 @@
         ["modifyvm", "{{.Name}}", "--memory", "2048"],
         ["modifyvm", "{{.Name}}", "--mouse", "usbtablet"],
         ["modifyvm", "{{.Name}}", "--vram", "9"]
-      ]
+      ],
+      "output_directory": "build"
     }
   ],
   "min_packer_version": "0.7.0",
