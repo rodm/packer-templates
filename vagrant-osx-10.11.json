@@ -1,0 +1,109 @@
+{
+  "variables": {
+    "iso_url": "OSX_InstallESD_10.11_15A284.dmg",
+    "iso_checksum": "",
+    "disk_size": "20480",
+    "username": "vagrant",
+    "password": "vagrant",
+    "autologin": "false",
+    "install_vagrant_keys": "true",
+    "update_system": "true"
+  },
+  "builders": [
+    {
+      "type": "vmware-iso",
+      "guest_os_type": "darwin14-64",
+      "iso_url": "{{user `iso_url`}}",
+      "iso_checksum_type": "md5",
+      "iso_checksum": "{{user `iso_checksum`}}",
+      "tools_upload_flavor": "darwin",
+      "tools_upload_path" : "/tmp/{{.Flavor}}.iso",
+      "boot_wait": "2s",
+      "skip_compaction": true,
+      "ssh_username": "{{user `username`}}",
+      "ssh_password": "{{user `password`}}",
+      "ssh_port": 22,
+      "ssh_wait_timeout": "90m",
+      "shutdown_command": "echo '{{user `username`}}'|sudo -S shutdown -h now",
+      "disk_size": "{{user `disk_size`}}",
+      "vmx_data": {
+        "memsize": "2048",
+        "numvcpus": "1",
+        "cpuid.coresPerSocket": "1",
+        "firmware": "efi",
+        "keyboardAndMouseProfile": "macProfile",
+        "smc.present": "TRUE",
+        "hpet0.present": "TRUE",
+        "ich7m.present": "TRUE",
+        "ehci.present": "TRUE",
+        "usb.present": "TRUE"
+      },
+      "output_directory": "build"
+    },
+    {
+      "type": "virtualbox-iso",
+      "guest_os_type": "MacOS1010_64",
+      "iso_url": "{{user `iso_url`}}",
+      "iso_checksum_type": "md5",
+      "iso_checksum": "{{user `iso_checksum`}}",
+      "guest_additions_mode": "disable",
+      "boot_wait": "2s",
+      "ssh_username": "{{user `username`}}",
+      "ssh_password": "{{user `password`}}",
+      "ssh_port": 22,
+      "ssh_wait_timeout": "90m",
+      "shutdown_command": "echo '{{user `username`}}'|sudo -S shutdown -h now",
+      "disk_size": "{{user `disk_size`}}",
+      "hard_drive_interface": "sata",
+      "iso_interface": "sata",
+      "vboxmanage": [
+        ["modifyvm", "{{.Name}}", "--audiocontroller", "hda"],
+        ["modifyvm", "{{.Name}}", "--boot1", "dvd"],
+        ["modifyvm", "{{.Name}}", "--boot2", "disk"],
+        ["modifyvm", "{{.Name}}", "--chipset", "ich9"],
+        ["modifyvm", "{{.Name}}", "--cpuidset", "00000001", "000306a9", "00020800", "80000201", "178bfbff"],
+        ["modifyvm", "{{.Name}}", "--firmware", "efi"],
+        ["modifyvm", "{{.Name}}", "--hpet", "on"],
+        ["modifyvm", "{{.Name}}", "--keyboard", "usb"],
+        ["modifyvm", "{{.Name}}", "--memory", "2048"],
+        ["modifyvm", "{{.Name}}", "--mouse", "usbtablet"],
+        ["modifyvm", "{{.Name}}", "--vram", "9"]
+      ],
+      "output_directory": "build"
+    }
+  ],
+  "min_packer_version": "0.7.0",
+  "provisioners": [
+    {
+      "destination": "/private/tmp/set_kcpassword.py",
+      "source": "scripts/osx/support/set_kcpassword.py",
+      "type": "file"
+    },
+    {
+      "type": "shell",
+      "execute_command": "chmod +x {{ .Path }}; sudo {{ .Vars }} {{ .Path }}",
+      "scripts": [
+        "scripts/osx/vagrant.sh",
+        "scripts/osx/vmware.sh",
+        "scripts/osx/puppet.sh",
+        "scripts/osx/network.sh",
+        "scripts/osx/autologin.sh",
+        "scripts/osx/system-update.sh",
+        "scripts/osx/zerodisk.sh"
+      ],
+      "environment_vars": [
+        "INSTALL_VAGRANT_KEYS={{user `install_vagrant_keys`}}",
+        "USERNAME={{user `username`}}",
+        "PASSWORD={{user `password`}}",
+        "AUTOLOGIN={{user `autologin`}}",
+        "UPDATE_SYSTEM={{user `update_system`}}"
+      ]
+    }
+  ],
+  "post-processors": [
+    {
+      "type": "vagrant",
+      "output": "osx-10.11-{{.Provider}}.box"
+    }
+  ]
+}
