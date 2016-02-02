@@ -49,6 +49,7 @@
       "type": "shell",
       "execute_command": "chmod +x {{ .Path }}; sudo {{ .Vars }} {{ .Path }}",
       "scripts": [
+        "scripts/osx/base.sh",
         "scripts/osx/vmware.sh",
         "scripts/osx/network.sh",
         "scripts/osx/system-update.sh",
