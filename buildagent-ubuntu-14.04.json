@@ -3,7 +3,8 @@
     "iso_url": "http://releases.ubuntu.com/14.04/ubuntu-14.04.3-server-amd64.iso",
     "iso_checksum": "9e5fecc94b3925bededed0fdca1bd417",
     "guest_additions_url": "http://download.virtualbox.org/virtualbox/4.3.20/VBoxGuestAdditions_4.3.20.iso",
-    "disk_size": "6000"
+    "disk_size": "6000",
+    "jdk_base_url": ""
   },
   "builders": [
     {
@@ -63,8 +64,12 @@
         "scripts/puppet.sh",
         "scripts/virtualbox.sh",
         "scripts/vmware.sh",
+        "scripts/teamcity-agent.sh",
         "scripts/cleanup.sh",
         "scripts/zerodisk.sh"
+      ],
+      "environment_vars": [
+        "JDK_BASE_URL={{user `jdk_base_url`}}"
       ],
       "override": {
         "vmware-iso": {
