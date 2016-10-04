@@ -3,7 +3,7 @@
     "iso_url": "CentOS-6.7-x86_64-minimal.iso",
     "iso_checksum": "0d9dc37b5dd4befa1c440d2174e88a87",
     "guest_additions_url": "http://download.virtualbox.org/virtualbox/4.3.20/VBoxGuestAdditions_4.3.20.iso",
-    "disk_size": "6000",
+    "disk_size": "12000",
     "jdk_base_url": ""
   },
   "builders": [
