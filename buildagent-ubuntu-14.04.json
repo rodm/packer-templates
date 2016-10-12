@@ -61,7 +61,6 @@
       "scripts": [
         "scripts/base.sh",
         "scripts/puppet.sh",
-        "scripts/virtualbox.sh",
         "scripts/vmware.sh",
         "scripts/teamcity-agent.sh",
         "scripts/cleanup.sh",
