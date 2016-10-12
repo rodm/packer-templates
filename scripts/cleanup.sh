@@ -15,7 +15,12 @@ fi
 # Make sure Udev doesn't block our network
 rm -f /etc/udev/rules.d/70-persistent-net.rules
 if [ -f /etc/redhat-release ]; then
-    sed -i -e '/HWADDR/d' /etc/sysconfig/network-scripts/ifcfg-eth0
+    for ndev in `ls -1 /etc/sysconfig/network-scripts/ifcfg-*`; do
+        if [ "`basename $ndev`" != "ifcfg-lo" ]; then
+            sed -i '/^HWADDR/d' "$ndev";
+            sed -i '/^UUID/d' "$ndev";
+        fi
+    done
 fi
 
 # Clean up tmp
