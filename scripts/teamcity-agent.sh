@@ -50,9 +50,6 @@ if [ -f /etc/redhat-release ]; then
     iptables -I INPUT 5 -p tcp --dport 9090 -m comment --comment "TeamCity Build Agent" -j ACCEPT
     iptables -I INPUT 6 -d 224.0.0.251/32 -p udp -m udp --dport 5353 -m comment --comment "mDNS" -j ACCEPT
     /sbin/service iptables save
-
-    /etc/init.d/messagebus restart
-    /etc/init.d/avahi-daemon restart
 fi
 
 # Install Java
