@@ -18,3 +18,12 @@ rm -f /tmp/linux.iso
 
 /tmp/vmware-tools-distrib/vmware-install.pl -d
 rm -fr /tmp/vmware-tools-distrib
+
+# VMware tools doesn't install on newer kernels, it exits recommending open-vm-tools be installed
+if [ ! -f /usr/sbin/vmtoolsd ]; then
+    if [ -f /etc/redhat-release ]; then
+        yum install -y -q open-vm-tools
+    else
+        apt-get install -y -q open-vm-tools
+    fi
+fi
