@@ -43,7 +43,6 @@
       "type": "shell",
       "scripts": [
         "scripts/base.sh",
-        "scripts/puppet.sh",
         "scripts/vmware.sh",
         "scripts/teamcity-agent.sh",
         "scripts/cleanup.sh",
