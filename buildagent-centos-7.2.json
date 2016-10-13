@@ -1,0 +1,68 @@
+{
+  "variables": {
+    "iso_url": "CentOS-7-x86_64-Minimal-1511.iso",
+    "iso_checksum": "88c0437f0a14c6e2c94426df9d43cd67",
+    "disk_size": "12000",
+    "jdk_base_url": ""
+  },
+  "builders": [
+    {
+      "type": "vmware-iso",
+      "guest_os_type": "centos-64",
+      "iso_url": "{{user `iso_url`}}",
+      "iso_checksum_type": "md5",
+      "iso_checksum": "{{user `iso_checksum`}}",
+      "tools_upload_flavor": "linux",
+      "tools_upload_path" : "/tmp/{{.Flavor}}.iso",
+      "http_directory": "http",
+      "headless": false,
+      "boot_wait": "10s",
+      "boot_command": [
+        "<tab> text ks=http://{{.HTTPIP}}:{{.HTTPPort}}/buildagent-centos-7.2-ks.cfg<enter><wait>"
+      ],
+      "disk_size": "{{user `disk_size`}}",
+      "disk_type_id": "4",
+      "ssh_username": "builder",
+      "ssh_password": "builder",
+      "ssh_port": 22,
+      "ssh_wait_timeout": "2400s",
+      "ssh_pty": true,
+      "shutdown_command": "echo '/sbin/halt -h -p' > /tmp/shutdown.sh; echo 'builder'|sudo -S sh '/tmp/shutdown.sh'",
+      "vm_name": "buildagent",
+      "vmdk_name": "disk",
+      "vmx_data": {
+        "memsize": "512",
+        "numvcpus": "2",
+        "cpuid.coresPerSocket": "2"
+      },
+      "output_directory": "build"
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "scripts": [
+        "scripts/base.sh",
+        "scripts/vmware.sh",
+        "scripts/teamcity-agent.sh",
+        "scripts/cleanup.sh",
+        "scripts/zerodisk.sh"
+      ],
+      "environment_vars": [
+        "JDK_BASE_URL={{user `jdk_base_url`}}"
+      ],
+      "override": {
+        "vmware-iso": {
+          "execute_command": "echo 'builder' | {{.Vars}} sudo -E -S sh '{{.Path}}'"
+        }
+      }
+    }
+  ],
+  "post-processors": [
+    {
+      "type": "compress",
+      "output": "buildagent-centos-7.2.tar.gz",
+      "keep_input_artifact": true
+    }
+  ]
+}
