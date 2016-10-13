@@ -29,6 +29,7 @@ if [ -f /etc/redhat-release ]; then
     yum install -y -q libXi
     yum install -y -q libXrender
     yum install -y -q fontconfig
+    yum install -y -q rpm-build
     yum install -y -q teamcity-agent
     yum clean -y all
 else
