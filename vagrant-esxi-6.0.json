@@ -1,0 +1,63 @@
+{
+  "variables": {
+    "iso_url": "VMware-VMvisor-Installer-6.0.0.update02-3620759.x86_64.iso",
+    "iso_checksum": "7b85a48eb67e277186d2422ebd42f6b6",
+    "disk_size": "20480"
+  },
+  "builders": [
+    {
+      "type": "vmware-iso",
+      "guest_os_type": "vmkernel6",
+      "iso_checksum": "{{user `iso_checksum`}}",
+      "iso_checksum_type": "md5",
+      "iso_url": "{{user `iso_url`}}",
+      "http_directory": "http",
+      "headless": false,
+      "boot_wait": "15s",
+      "boot_command": [
+        "O<wait>",
+        " ks=http://{{.HTTPIP}}:{{.HTTPPort}}/vagrant-esxi-6.0-ks.cfg<enter><wait>"
+      ],
+      "disk_size": "{{user `disk_size`}}",
+      "disk_type_id": "0",
+      "ssh_username": "root",
+      "ssh_password": "vagrant",
+      "ssh_port": 22,
+      "ssh_wait_timeout": "20m",
+      "shutdown_command": "/bin/halt",
+      "vm_name": "esxi60",
+      "vmdk_name": "disk",
+      "vmx_data": {
+        "memsize": "4096",
+        "numvcpus": "2",
+        "cpuid.coresPerSocket": "2",
+        "vhv.enable": "TRUE",
+        "RemoteDisplay.vnc.webSocket.port": "6550"
+      }
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "scripts": [
+        "scripts/esxi/esxi.sh"
+      ]
+    },
+    {
+      "type": "file",
+      "source": "scripts/esxi/support/local.sh",
+      "destination": "/etc/rc.local.d/local.sh"
+    },
+    {
+      "type": "file",
+      "source": "scripts/esxi/support/vagrant.pub",
+      "destination": "/etc/ssh/keys-root/authorized_keys"
+    }
+  ],
+  "post-processors": [
+    {
+      "type": "vagrant",
+      "output": "esxi-6.0-{{.Provider}}.box"
+    }
+  ]
+}
