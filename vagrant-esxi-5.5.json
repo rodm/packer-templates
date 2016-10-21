@@ -1,7 +1,7 @@
 {
   "variables": {
     "iso_url": "VMware-VMvisor-Installer-5.5.0.update02-2068190.x86_64.iso",
-    "iso_checksum": "5d109d10864ea8ad1d186a336bd26c1c",
+    "iso_checksum": "5d109d10864ea8ad1d186a336bd26c1c"
   },
   "builders": [
     {
@@ -39,17 +39,17 @@
     {
       "type": "shell",
       "scripts": [
-        "scripts/esxi.sh"
+        "scripts/esxi/esxi.sh"
       ]
     },
     {
       "type": "file",
-      "source": "local.sh",
+      "source": "scripts/esxi/support/local.sh",
       "destination": "/etc/rc.local.d/local.sh"
     },
     {
       "type": "file",
-      "source": "vagrant.pub",
+      "source": "scripts/esxi/support/vagrant.pub",
       "destination": "/etc/ssh/keys-root/authorized_keys"
     }
   ],
