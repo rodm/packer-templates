@@ -1,7 +1,8 @@
 {
   "variables": {
     "iso_url": "VMware-VMvisor-Installer-5.5.0.update02-2068190.x86_64.iso",
-    "iso_checksum": "5d109d10864ea8ad1d186a336bd26c1c"
+    "iso_checksum": "5d109d10864ea8ad1d186a336bd26c1c",
+    "disk_size": "20480"
   },
   "builders": [
     {
@@ -17,15 +18,15 @@
         "O<wait>",
         " ks=http://{{.HTTPIP}}:{{.HTTPPort}}/vagrant-esxi-5.5-ks.cfg<enter><wait>"
       ],
+      "disk_size": "{{user `disk_size`}}",
       "disk_type_id": "0",
-      "disk_size": 20140,
       "ssh_username": "root",
       "ssh_password": "vagrant",
       "ssh_port": 22,
       "ssh_wait_timeout": "20m",
       "shutdown_command": "/bin/halt",
       "vm_name": "esxi55",
-      "vmdk_name": "esxi55",
+      "vmdk_name": "disk",
       "vmx_data": {
         "memsize": "4096",
         "numvcpus": "2",
