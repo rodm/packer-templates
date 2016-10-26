@@ -3,6 +3,8 @@
     "iso_url": "http://releases.ubuntu.com/14.04/ubuntu-14.04.5-server-amd64.iso",
     "iso_checksum": "dd54dc8cfc2a655053d19813c2f9aa9f",
     "disk_size": "12000",
+    "network_device": "vmxnet3",
+    "network_name": "VM Network",
     "jdk_base_url": ""
   },
   "builders": [
@@ -51,6 +53,11 @@
         "memsize": "512",
         "numvcpus": "2",
         "cpuid.coresPerSocket": "2"
+      },
+      "vmx_data_post": {
+        "ethernet0.virtualDev": "{{user `network_device`}}",
+        "ethernet0.networkName": "{{user `network_name`}}",
+        "ethernet0.uptCompatibility": "TRUE"
       },
       "output_directory": "build"
     }

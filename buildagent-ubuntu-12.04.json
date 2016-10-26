@@ -3,6 +3,8 @@
     "iso_url": "http://releases.ubuntu.com/12.04/ubuntu-12.04.5-server-amd64.iso",
     "iso_checksum": "769474248a3897f4865817446f9a4a53",
     "disk_size": "12000",
+    "network_device": "vmxnet3",
+    "network_name": "VM Network",
     "jdk_base_url": ""
   },
   "builders": [
@@ -51,6 +53,11 @@
         "memsize": "512",
         "numvcpus": "2",
         "cpuid.coresPerSocket": "2"
+      },
+      "vmx_data_post": {
+        "ethernet0.virtualDev": "{{user `network_device`}}",
+        "ethernet0.networkName": "{{user `network_name`}}",
+        "ethernet0.uptCompatibility": "TRUE"
       },
       "output_directory": "build"
     }

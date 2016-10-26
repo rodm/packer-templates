@@ -6,6 +6,8 @@
     "username": "builder",
     "password": "builder",
     "update_system": "true",
+    "network_device": "e1000e",
+    "network_name": "VM Network",
     "jdk_base_url": ""
   },
   "builders": [
@@ -40,6 +42,10 @@
         "ich7m.present": "TRUE",
         "ehci.present": "TRUE",
         "usb.present": "TRUE"
+      },
+      "vmx_data_post": {
+        "ethernet0.virtualDev": "{{user `network_device`}}",
+        "ethernet0.networkName": "{{user `network_name`}}"
       },
       "output_directory": "build"
     }

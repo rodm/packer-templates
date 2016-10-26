@@ -3,6 +3,8 @@
     "iso_url": "CentOS-7-x86_64-Minimal-1503-01.iso",
     "iso_checksum": "d07ab3e615c66a8b2e9a50f4852e6a77",
     "disk_size": "12000",
+    "network_device": "vmxnet3",
+    "network_name": "VM Network",
     "jdk_base_url": ""
   },
   "builders": [
@@ -34,6 +36,11 @@
         "memsize": "512",
         "numvcpus": "2",
         "cpuid.coresPerSocket": "2"
+      },
+      "vmx_data_post": {
+        "ethernet0.virtualDev": "{{user `network_device`}}",
+        "ethernet0.networkName": "{{user `network_name`}}",
+        "ethernet0.uptCompatibility": "TRUE"
       },
       "output_directory": "build"
     }
