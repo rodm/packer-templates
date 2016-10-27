@@ -1,0 +1,47 @@
+# Packer templates
+:uri-packer: https://www.packer.io/
+:uri-vagrant: https://www.vagrantup.com/
+:uri-virtualbox: https://www.virtualbox.org/
+:uri-vmware: http://www.vmware.com/
+:uri-teamcity: https://www.jetbrains.com/teamcity/
+
+{uri-packer}[Packer] templates for building {uri-teamcity}[TeamCity] Build Agent VMs and Vagrant base boxes.
+
+## buildagent templates
+
+The `buildagent` templates build a VM with Java and TeamCity Build Agent installed and ready
+for deployment to a {uri-vmware}[VMware ESXi server].
+
+Current boxes
+
+* Ubuntu 12.04.5 LTS
+* Ubuntu 14.04.5 LTS
+* CentOS 6.7 (Minimal)
+* CentOS 6.8 (Minimal)
+* CentOS 7.1 (Minimal)
+* CentOS 7.2 (Minimal)
+* OS X 10.11.6 El Capitan
+* macOS 10.12 Sierra
+
+*All are 64-bit*
+
+## Vagrant templates
+
+The {uri-vagrant}[Vagrant] base box templates have builders for
+{uri-virtualbox}[VirtualBox] and {uri-vmware}[VMware]
+
+Current boxes
+
+* CentOS 6.4 (Minimal)
+* CentOS 6.5 (Minimal)
+* CentOS 6.6 (Minimal)
+* CentOS 7.0 (Minimal)
+* Ubuntu 10.04 LTS
+* Ubuntu 12.04 LTS
+* Ubuntu 14.04 LTS
+* Mac OS X 10.8 Mountain Lion
+* Mac OS X 10.9 Mavericks
+* Mac OS X 10.10 Yosemite
+* Mac OS X 10.11 El Capitan
+* VMware ESXi 5.5
+* VMware ESXi 6.0
