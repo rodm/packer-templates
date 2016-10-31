@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Install Java
-JDK_BASE_URL=${JDK_BASE_URL:-http://download.oracle.com/otn-pub/java/jdk/8u102-b14}
-JDK_URL=${JDK_URL:-$JDK_BASE_URL/jdk-8u102-macosx-x64.dmg}
+JDK_BASE_URL=${JDK_BASE_URL:-http://download.oracle.com/otn-pub/java/jdk/8u112-b16}
+JDK_URL=${JDK_URL:-$JDK_BASE_URL/jdk-8u112-macosx-x64.dmg}
 JDK_FILE=${JDK_URL##*/}
 TMPMOUNT=`/usr/bin/mktemp -d /tmp/jdk.XXXX`
 
