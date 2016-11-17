@@ -3,7 +3,9 @@
     "iso_url": "http://releases.ubuntu.com/14.04/ubuntu-14.04.5-server-amd64.iso",
     "iso_checksum": "dd54dc8cfc2a655053d19813c2f9aa9f",
     "guest_additions_url": "http://download.virtualbox.org/virtualbox/4.3.20/VBoxGuestAdditions_4.3.20.iso",
-    "disk_size": "4000"
+    "disk_size": "4000",
+    "network_device": "vmxnet3",
+    "network_name": "VM Network"
   },
   "builders": [
     {
@@ -96,6 +98,11 @@
         "memsize": "512",
         "numvcpus": "2",
         "cpuid.coresPerSocket": "1"
+      },
+      "vmx_data_post": {
+        "ethernet0.virtualDev": "{{user `network_device`}}",
+        "ethernet0.networkName": "{{user `network_name`}}",
+        "ethernet0.uptCompatibility": "TRUE"
       },
       "output_directory": "build"
     }
