@@ -1,0 +1,149 @@
+{
+  "variables": {
+    "iso_url": "http://releases.ubuntu.com/14.04/ubuntu-14.04.5-server-amd64.iso",
+    "iso_checksum": "dd54dc8cfc2a655053d19813c2f9aa9f",
+    "guest_additions_url": "http://download.virtualbox.org/virtualbox/4.3.20/VBoxGuestAdditions_4.3.20.iso",
+    "disk_size": "4000",
+    "network_device": "vmxnet3",
+    "network_name": "VM Network",
+    "jdk_url": "",
+    "tomcat_url": "",
+    "nexus_url": ""
+  },
+  "builders": [
+    {
+      "type": "virtualbox-iso",
+      "guest_os_type": "Ubuntu_64",
+      "iso_url": "{{user `iso_url`}}",
+      "iso_checksum_type": "md5",
+      "iso_checksum": "{{user `iso_checksum`}}",
+      "guest_additions_url": "{{user `guest_additions_url`}}",
+      "guest_additions_sha256": "9ab48f44ac26a6deb374cb5fe6bad103bbf4fdf5186140e2d40ebe48bd01f3ea",
+      "guest_additions_path": "/tmp/VBoxGuestAdditions.iso",
+      "http_directory": "http",
+      "headless": false,
+      "boot_wait": "10s",
+      "boot_command": [
+        "<esc><wait>",
+        "<esc><wait>",
+        "<enter><wait>",
+        "/install/vmlinuz <wait>",
+        "auto ",
+        "console-setup/ask_detect=false ",
+        "debconf/frontend=noninteractive ",
+        "debian-installer=en_US ",
+        "fb=false ",
+        "hostname={{.Name}} ",
+        "initrd=/install/initrd.gz ",
+        "kbd-chooser/method=us ",
+        "keyboard-configuration/modelcode=SKIP ",
+        "keyboard-configuration/layout=USA ",
+        "keyboard-configuration/variant=USA ",
+        "locale=en_US ",
+        "noapic ",
+        "preseed/url=http://{{.HTTPIP}}:{{.HTTPPort}}/nexus-ubuntu-14.04-preseed.cfg<wait>",
+        " -- <enter>"
+      ],
+      "disk_size": "{{user `disk_size`}}",
+      "ssh_username": "nexus",
+      "ssh_password": "nexus",
+      "ssh_port": 22,
+      "ssh_wait_timeout": "600s",
+      "shutdown_command": "echo 'shutdown -P now' > shutdown.sh; echo 'nexus' | sudo -S sh 'shutdown.sh'",
+      "virtualbox_version_file": ".vbox_version",
+      "vboxmanage": [
+        [ "modifyvm", "{{.Name}}", "--memory", "2048" ],
+        [ "modifyvm", "{{.Name}}", "--cpus", "2" ]
+      ]
+    },
+    {
+      "type": "vmware-iso",
+      "guest_os_type": "ubuntu-64",
+      "iso_url": "{{user `iso_url`}}",
+      "iso_checksum_type": "md5",
+      "iso_checksum": "{{user `iso_checksum`}}",
+      "tools_upload_flavor": "linux",
+      "tools_upload_path" : "/tmp/{{.Flavor}}.iso",
+      "http_directory": "http",
+      "headless": false,
+      "boot_wait": "10s",
+      "boot_command": [
+        "<esc><wait>",
+        "<esc><wait>",
+        "<enter><wait>",
+        "/install/vmlinuz <wait>",
+        "auto ",
+        "console-setup/ask_detect=false ",
+        "debconf/frontend=noninteractive ",
+        "debian-installer=en_US ",
+        "fb=false ",
+        "hostname={{.Name}} ",
+        "initrd=/install/initrd.gz ",
+        "kbd-chooser/method=us ",
+        "keyboard-configuration/modelcode=SKIP ",
+        "keyboard-configuration/layout=USA ",
+        "keyboard-configuration/variant=USA ",
+        "locale=en_US ",
+        "noapic ",
+        "preseed/url=http://{{.HTTPIP}}:{{.HTTPPort}}/nexus-ubuntu-14.04-preseed.cfg<wait>",
+        " -- <enter>"
+      ],
+      "disk_size": "{{user `disk_size`}}",
+      "disk_type_id": "4",
+      "ssh_username": "nexus",
+      "ssh_password": "nexus",
+      "ssh_port": 22,
+      "ssh_wait_timeout": "600s",
+      "shutdown_command": "echo 'shutdown -P now' > shutdown.sh; echo 'nexus' | sudo -S sh 'shutdown.sh'",
+      "vm_name": "nexus",
+      "vmdk_name": "disk",
+      "vmx_data": {
+        "memsize": "512",
+        "numvcpus": "2",
+        "cpuid.coresPerSocket": "2"
+      },
+      "vmx_data_post": {
+        "ethernet0.virtualDev": "{{user `network_device`}}",
+        "ethernet0.networkName": "{{user `network_name`}}",
+        "ethernet0.uptCompatibility": "TRUE"
+      },
+      "output_directory": "build"
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "file",
+      "source": "scripts/support/nexus-server",
+      "destination": "/tmp/nexus-server"
+    },
+    {
+      "type": "file",
+      "source": "scripts/support/server.sh",
+      "destination": "/tmp/server.sh"
+    },
+    {
+      "type": "shell",
+      "execute_command": "echo 'nexus' | {{.Vars}} sudo -E -S sh '{{.Path}}'",
+      "scripts": [
+        "scripts/base.sh",
+        "scripts/virtualbox.sh",
+        "scripts/vmware.sh",
+        "scripts/nexus.sh",
+        "scripts/cleanup.sh",
+        "scripts/zerodisk.sh"
+      ],
+      "environment_vars": [
+        "JDK_URL={{user `jdk_url`}}",
+        "TOMCAT_URL={{user `tomcat_url`}}",
+        "NEXUS_URL={{user `nexus_url`}}"
+      ]
+    }
+  ],
+  "post-processors": [
+    {
+      "type": "compress",
+      "output": "nexus-ubuntu-14.04.tar.gz",
+      "keep_input_artifact": true
+    }
+  ]
+}

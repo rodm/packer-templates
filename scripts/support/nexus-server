@@ -1,0 +1,42 @@
+#!/bin/sh
+
+### BEGIN INIT INFO
+# Provides:          nexus-server
+# Required-Start:    
+# Required-Stop:     
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Start and stop the Nexus Repository Server
+### END INIT INFO
+
+NEXUS_HOME=/opt/nexus
+NEXUS_USER=nexus
+NEXUS_SCRIPT=${NEXUS_HOME}/bin/server.sh
+NEXUS_LOG=${NEXUS_HOME}/logs/server-console.log
+
+umask 002
+
+case "$1" in
+  start)
+    su - ${NEXUS_USER} -c "${NEXUS_SCRIPT} $1 > ${NEXUS_LOG} 2>&1"
+    RETVAL=$?
+    ;;
+
+  stop)
+    su - ${NEXUS_USER} -c "${NEXUS_SCRIPT} $1 >> ${NEXUS_LOG} 2>&1"
+    RETVAL=$?
+    ;;
+
+  restart)
+    $0 stop && $0 start
+    RETVAL=$?
+    ;;
+
+  *)
+    echo "Usage: $0 { start | stop | restart }"
+    exit 1
+    ;;
+
+esac
+exit ${RETVAL}
+
