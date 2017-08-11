@@ -2,7 +2,7 @@
   "variables": {
     "iso_url": "CentOS-6.4-x86_64-minimal.iso",
     "iso_checksum": "4a5fa01c81cc300f4729136e28ebe600",
-    "guest_additions_url": "http://download.virtualbox.org/virtualbox/4.3.20/VBoxGuestAdditions_4.3.20.iso",
+    "guest_additions_url": "http://download.virtualbox.org/virtualbox/4.3.20/VBoxGuestAdditions_4.3.20.iso"
   },
   "builders": [
     {

@@ -1,6 +1,6 @@
 {
   "variables": {
-    "disk_size": 4000,
+    "disk_size": "4000",
     "iso_url": "file:///Volumes/Software/ubuntu/ubuntu-12.04.4-server-amd64.iso",
     "iso_checksum": "e83adb9af4ec0a039e6a5c6e145a34de"
   },
