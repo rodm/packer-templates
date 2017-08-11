@@ -2,7 +2,7 @@
   "variables": {
     "iso_url": "OSX_InstallESD_10.11.6_15G31.dmg",
     "iso_checksum": "",
-    "disk_size": "20480",
+    "disk_size": "32000",
     "username": "builder",
     "password": "builder",
     "update_system": "true",
