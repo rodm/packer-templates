@@ -25,7 +25,7 @@
       "ssh_username": "{{user `username`}}",
       "ssh_password": "{{user `password`}}",
       "ssh_port": 22,
-      "ssh_timeout": "90m",
+      "ssh_timeout": "30m",
       "shutdown_command": "echo '{{user `username`}}'|sudo -S shutdown -h now",
       "disk_size": "{{user `disk_size`}}",
       "disk_type_id": "4",
