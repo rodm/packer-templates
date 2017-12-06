@@ -1,0 +1,123 @@
+{
+  "variables": {
+    "iso_url": "sol-11_3-text-x86.iso",
+    "iso_checksum": "a61f027eb51d997d6daa51712179cb4a",
+    "disk_size": "16000",
+    "network_device": "vmxnet3",
+    "network_name": "VM Network",
+    "jdk_base_url": ""
+  },
+  "builders": [
+    {
+      "type": "vmware-iso",
+      "guest_os_type": "solaris11-64",
+      "iso_url": "{{user `iso_url`}}",
+      "iso_checksum_type": "md5",
+      "iso_checksum": "{{user `iso_checksum`}}",
+      "tools_upload_flavor": "solaris",
+      "tools_upload_path": "/tmp/{{.Flavor}}.iso",
+      "headless": false,
+      "boot_wait": "105s",
+      "boot_command": [
+        "<enter><wait>",
+        "3<enter><wait10>",
+        "<wait10><wait10><wait10><wait10>",
+        "1<enter><wait10><wait10><wait10><wait10>",
+        "<f2><wait><wait><wait>",
+        "<f2><wait>",
+        "<f2><wait>",
+        "<f2><wait>",
+        "<bs><bs><bs><bs><bs><bs><bs>",
+        "buildagent<wait><f2>",
+        "<f2><wait>",
+        "<tab><tab><tab><tab><tab><tab><tab><wait>",
+        "<f2><wait>",
+        "<tab><tab><tab><tab><tab><tab><tab><wait>",
+        "<f2><wait>",
+        "<f2><wait>",
+        "<f2><wait>",
+        "<f2><wait>",
+        "<f2><wait>",
+        "<f2><wait>",
+        "builder123<tab><wait>",
+        "builder123<tab><wait>",
+        "builder<tab><wait>",
+        "builder<tab><wait>",
+        "builder1<tab><wait>",
+        "builder1<tab><wait>",
+        "<f2><wait>",
+        "<f2><wait>",
+        "<f2><wait>",
+        "<f2><wait>",
+        "<wait10><wait10><wait10><wait10><wait10><wait10>",
+        "<wait10><wait10><wait10><wait10><wait10><wait10>",
+        "<wait10><wait10><wait10><wait10><wait10><wait10>",
+        "<wait10><wait10><wait10><wait10><wait10><wait10>",
+        "<wait10><wait10><wait10><wait10><wait10><wait10>",
+        "<wait10><wait10><wait10><wait10><wait10><wait10>",
+        "<wait10><wait10><wait10><wait10><wait10><wait10>",
+        "<wait10><wait10><wait10><wait10><wait10><wait10>",
+        "<f8><wait10><wait10>",
+        "<enter><wait10>",
+        "<wait10><wait10><wait10><wait10><wait10><wait10>",
+        "<wait10><wait10><wait10><wait10><wait10><wait10>",
+        "<wait10><wait10><wait10><wait10><wait10><wait10>",
+        "<wait10><wait10><wait10><wait10>",
+        "builder<enter><wait>",
+        "builder1<enter><wait>",
+        "sudo bash<enter><wait>",
+        "builder1<enter><wait>",
+        "echo 'builder ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers<enter><wait>",
+        "/usr/gnu/bin/sed -i 's/^.*requiretty/#Defaults requiretty/' /etc/sudoers<enter><wait>",
+        "exit<enter><wait>"
+      ],
+      "disk_size": "{{user `disk_size`}}",
+      "disk_type_id": "4",
+      "ssh_username": "builder",
+      "ssh_password": "builder1",
+      "ssh_port": 22,
+      "ssh_wait_timeout": "2400s",
+      "shutdown_command": "sudo /usr/sbin/init 5",
+      "vm_name": "buildagent",
+      "vmdk_name": "disk",
+      "vmx_data": {
+        "memsize": "1536",
+        "numvcpus": "2",
+        "cpuid.coresPerSocket": "2"
+      },
+      "vmx_data_post": {
+        "ethernet0.virtualDev": "{{user `network_device`}}",
+        "ethernet0.networkName": "{{user `network_name`}}",
+        "ethernet0.uptCompatibility": "TRUE"
+      },
+      "output_directory": "build"
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "scripts": [
+        "scripts/solaris/base.sh",
+        "scripts/solaris/vmware.sh",
+        "scripts/solaris/teamcity-agent.sh",
+        "scripts/solaris/cleanup.sh",
+        "scripts/solaris/zerodisk.sh"
+      ],
+      "environment_vars": [
+        "JDK_BASE_URL={{user `jdk_base_url`}}"
+      ],
+      "override": {
+        "vmware-iso": {
+          "execute_command": "echo 'builder' | {{.Vars}} sudo -E -S bash '{{.Path}}'"
+        }
+      }
+    }
+  ],
+  "post-processors": [
+    {
+      "type": "compress",
+      "output": "buildagent-solaris-11.3.tar.gz",
+      "keep_input_artifact": true
+    }
+  ]
+}
