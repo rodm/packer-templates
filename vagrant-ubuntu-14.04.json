@@ -1,8 +1,8 @@
 {
   "variables": {
-    "iso_url": "http://releases.ubuntu.com/14.04/ubuntu-14.04.3-server-amd64.iso",
-    "iso_checksum": "9b218654cdcdf9722171648c52f8a088",
-    "guest_additions_url": "http://download.virtualbox.org/virtualbox/4.3.20/VBoxGuestAdditions_4.3.20.iso"
+    "iso_url": "http://releases.ubuntu.com/14.04/ubuntu-14.04.5-server-amd64.iso",
+    "iso_checksum": "dd54dc8cfc2a655053d19813c2f9aa9f",
+    "guest_additions_url": "http://download.virtualbox.org/virtualbox/5.2.2/VBoxGuestAdditions_5.2.2.iso"
   },
   "builders": [
     {
@@ -12,7 +12,7 @@
       "iso_checksum_type": "md5",
       "iso_checksum": "{{user `iso_checksum`}}",
       "guest_additions_url": "{{user `guest_additions_url`}}",
-      "guest_additions_sha256": "9ab48f44ac26a6deb374cb5fe6bad103bbf4fdf5186140e2d40ebe48bd01f3ea",
+      "guest_additions_sha256": "8317a0479a94877829b20a19df8a7c09187b31eecb3f1ed9d2b8cb8681a81bb8",
       "guest_additions_path": "/tmp/VBoxGuestAdditions.iso",
       "http_directory": "http",
       "headless": false,
@@ -103,7 +103,7 @@
         "scripts/puppet.sh",
         "scripts/vagrant.sh",
         "scripts/virtualbox.sh",
-        "scripts/vmware.sh",
+        "scripts/linux/vmware.sh",
         "scripts/cleanup.sh",
         "scripts/zerodisk.sh"
       ],
