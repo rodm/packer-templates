@@ -1,7 +1,7 @@
 #!/bin/sh
 
 if [ -f /etc/redhat-release ]; then
-    yum -y clean all
+    yum -y -q clean all
 #    yum -y update
 else
     apt-get -y update
