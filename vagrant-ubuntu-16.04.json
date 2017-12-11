@@ -45,6 +45,7 @@
       "ssh_port": 22,
       "ssh_wait_timeout": "600s",
       "shutdown_command": "echo 'shutdown -P now' > /tmp/shutdown.sh; echo 'vagrant'|sudo -S sh '/tmp/shutdown.sh'",
+      "vm_name": "xenial",
       "virtualbox_version_file": ".vbox_version",
       "vboxmanage": [
         [ "modifyvm", "{{.Name}}", "--memory", "384" ],
@@ -90,6 +91,8 @@
       "ssh_port": 22,
       "ssh_wait_timeout": "600s",
       "shutdown_command": "echo 'shutdown -P now' > /tmp/shutdown.sh; echo 'vagrant'|sudo -S sh '/tmp/shutdown.sh'",
+      "vm_name": "xenial",
+      "vmdk_name": "disk",
       "vmx_data": {
         "memsize": "384",
         "numvcpus": "2",

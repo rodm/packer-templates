@@ -26,6 +26,7 @@
       "ssh_port": 22,
       "ssh_wait_timeout": "2400s",
       "shutdown_command": "echo '/sbin/halt -h -p' > /tmp/shutdown.sh; echo 'vagrant'|sudo -S sh '/tmp/shutdown.sh'",
+      "vm_name": "centos7_4",
       "virtualbox_version_file": ".vbox_version",
       "vboxmanage": [
         [ "modifyvm", "{{.Name}}", "--memory", "512" ],
@@ -52,6 +53,8 @@
       "ssh_port": 22,
       "ssh_wait_timeout": "2400s",
       "shutdown_command": "echo '/sbin/halt -h -p' > /tmp/shutdown.sh; echo 'vagrant'|sudo -S sh '/tmp/shutdown.sh'",
+      "vm_name": "centos7_4",
+      "vmdk_name": "disk",
       "vmx_data": {
         "memsize": "512",
         "numvcpus": "2",
