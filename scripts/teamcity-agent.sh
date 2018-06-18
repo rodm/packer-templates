@@ -55,7 +55,7 @@ fi
 
 # Install Java
 JDK_BASE_URL=${JDK_BASE_URL:-http://download.oracle.com/otn-pub/java/jdk/8u144-b01/090f390dda5b47b9b721c7dfaa008135}
-JDK_URL=${JDK_URL:-$JDK_BASE_URL/jdk-8u144-linux-x64.tar.gz}
+JDK_URL=${JDK_URL:-$JDK_BASE_URL/jdk-8u172-linux-x64.tar.gz}
 JDK_FILE=${JDK_URL##*/}
 JAVA_HOME=/opt/$(echo $JDK_FILE | sed -e 's|jdk-\([0-9]\)u\([0-9]\{1,3\}\).*|jdk1.\1.0_\2|')
 mkdir -p /opt
