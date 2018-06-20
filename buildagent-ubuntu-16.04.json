@@ -1,7 +1,7 @@
 {
   "variables": {
-    "iso_url": "http://releases.ubuntu.com/16.04/ubuntu-16.04.3-server-amd64.iso",
-    "iso_checksum": "10fcd20619dce11fe094e960c85ba4a9",
+    "iso_url": "http://releases.ubuntu.com/16.04/ubuntu-16.04.4-server-amd64.iso",
+    "iso_checksum_url": "http://releases.ubuntu.com/16.04/SHA256SUMS",
     "disk_size": "16000",
     "network_device": "vmxnet3",
     "network_name": "VM Network",
@@ -12,8 +12,8 @@
       "type": "vmware-iso",
       "guest_os_type": "ubuntu-64",
       "iso_url": "{{user `iso_url`}}",
-      "iso_checksum_type": "md5",
-      "iso_checksum": "{{user `iso_checksum`}}",
+      "iso_checksum_type": "sha256",
+      "iso_checksum_url": "{{user `iso_checksum_url`}}",
       "tools_upload_flavor": "linux",
       "tools_upload_path" : "/tmp/{{.Flavor}}.iso",
       "http_directory": "http",
