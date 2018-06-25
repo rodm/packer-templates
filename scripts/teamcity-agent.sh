@@ -36,13 +36,20 @@ else
     apt-get update -y
     apt-get install -y -q avahi-daemon
     apt-get install -y -q unzip
+    apt-get install -y -q gpg
     apt-get install -y -q curl
     apt-get install -y -q xvfb
     apt-get install -y -q libxtst6
     apt-get install -y -q libxi6
     apt-get install -y -q libxrender1
     apt-get install -y -q libfontconfig1
-    apt-get install --force-yes -y -q teamcity-agent
+fi
+
+if [ ! -f /etc/redhat-release ]; then
+    curl -s https://bintray.com/user/downloadSubjectPublicKey?username=bintray -o /tmp/bintray.asc
+    apt-key add /tmp/bintray.asc
+    apt-get update -y
+    apt-get install -y -q teamcity-agent
     apt-get -y clean
 fi
 
