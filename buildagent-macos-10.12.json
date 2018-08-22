@@ -13,8 +13,8 @@
   "builders": [
     {
       "type": "vmware-iso",
-      "guest_os_type": "darwin14-64",
-      "version": "11",
+      "guest_os_type": "darwin16-64",
+      "version": "13",
       "iso_url": "{{user `iso_url`}}",
       "iso_checksum_type": "md5",
       "iso_checksum": "{{user `iso_checksum`}}",
