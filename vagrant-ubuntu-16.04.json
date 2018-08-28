@@ -1,18 +1,18 @@
 {
   "variables": {
-    "iso_url": "http://releases.ubuntu.com/16.04/ubuntu-16.04.3-server-amd64.iso",
-    "iso_checksum": "10fcd20619dce11fe094e960c85ba4a9",
-    "guest_additions_url": "http://download.virtualbox.org/virtualbox/5.2.2/VBoxGuestAdditions_5.2.2.iso"
+    "iso_url": "http://releases.ubuntu.com/16.04/ubuntu-16.04.5-server-amd64.iso",
+    "iso_checksum": "c94de1cc2e10160f325eb54638a5b5aa38f181d60ee33dae9578d96d932ee5f8",
+    "guest_additions_url": "http://download.virtualbox.org/virtualbox/5.2.18/VBoxGuestAdditions_5.2.18.iso"
   },
   "builders": [
     {
       "type": "virtualbox-iso",
       "guest_os_type": "Ubuntu_64",
       "iso_url": "{{user `iso_url`}}",
-      "iso_checksum_type": "md5",
+      "iso_checksum_type": "sha256",
       "iso_checksum": "{{user `iso_checksum`}}",
       "guest_additions_url": "{{user `guest_additions_url`}}",
-      "guest_additions_sha256": "8317a0479a94877829b20a19df8a7c09187b31eecb3f1ed9d2b8cb8681a81bb8",
+      "guest_additions_sha256": "f98b6ad7093ee0b27d26dea565b197a5f33fdac93c4b67e73824ce889d6c964c",
       "guest_additions_path": "/tmp/VBoxGuestAdditions.iso",
       "http_directory": "http",
       "headless": false,
@@ -48,7 +48,7 @@
       "vm_name": "xenial",
       "virtualbox_version_file": ".vbox_version",
       "vboxmanage": [
-        [ "modifyvm", "{{.Name}}", "--memory", "384" ],
+        [ "modifyvm", "{{.Name}}", "--memory", "512" ],
         [ "modifyvm", "{{.Name}}", "--cpus", "2" ]
       ]
     },
@@ -56,7 +56,7 @@
       "type": "vmware-iso",
       "guest_os_type": "ubuntu-64",
       "iso_url": "{{user `iso_url`}}",
-      "iso_checksum_type": "md5",
+      "iso_checksum_type": "sha256",
       "iso_checksum": "{{user `iso_checksum`}}",
       "tools_upload_flavor": "linux",
       "tools_upload_path" : "/tmp/{{.Flavor}}.iso",
@@ -94,7 +94,7 @@
       "vm_name": "xenial",
       "vmdk_name": "disk",
       "vmx_data": {
-        "memsize": "384",
+        "memsize": "512",
         "numvcpus": "2",
         "cpuid.coresPerSocket": "1"
       }
@@ -105,7 +105,6 @@
       "type": "shell",
       "scripts": [
         "scripts/base.sh",
-        "scripts/puppet.sh",
         "scripts/vagrant.sh",
         "scripts/virtualbox.sh",
         "scripts/linux/vmware.sh",
