@@ -1,0 +1,48 @@
+#!/sbin/openrc-run
+#
+# Start and stop the TeamCity Build Agent
+#
+
+description="TeamCity Build Agent"
+script="/usr/share/teamcity-agent/agent.sh"
+
+depend() {
+        use net
+}
+
+status() {
+    ebegin "Status of TeamCity Build Agent"
+    /bin/su - teamcity -c "$script status"
+    eend $?
+}
+
+start_pre() {
+    umask 002
+    mkdir -p /var/run/teamcity-agent
+    chown -R teamcity:teamcity /var/run/teamcity-agent
+    chmod -R 750 /var/run/teamcity-agent
+}
+
+start() {
+    ebegin "Starting TeamCity Build Agent"
+    /bin/su - teamcity -c "$script start"
+    eend $?
+}
+
+stop() {
+    ebegin "Stopping TeamCity Build Agent"
+    if [ "${RC_CMD}" = "restart" ] ; then
+        check_stopped || return 1
+    fi
+    /bin/su - teamcity -c "$script stop"
+    eend $?
+}
+
+check_stopped() {
+  /bin/su - teamcity -c "$script status"
+  until [ $? -ne 0 ]; do
+    sleep 1
+    /bin/su - teamcity -c "$script status"
+  done
+  sleep 3
+}

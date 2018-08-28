@@ -1,0 +1,14 @@
+#!/bin/sh
+#
+# Start/stop script for TeamCity Build Agent
+#
+
+. /etc/teamcity-agent/teamcity-agent.conf
+
+if [ ! -f $CONFIG_FILE ]; then
+    echo "No agent properties file found."
+    exit 1
+fi
+
+cd /opt/teamcity-agent/bin
+exec ./agent.sh $*
