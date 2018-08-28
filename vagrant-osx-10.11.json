@@ -86,7 +86,6 @@
         "scripts/osx/base.sh",
         "scripts/osx/vagrant.sh",
         "scripts/osx/vmware.sh",
-        "scripts/osx/puppet.sh",
         "scripts/osx/network.sh",
         "scripts/osx/autologin.sh",
         "scripts/osx/system-update.sh",
