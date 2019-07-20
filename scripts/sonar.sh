@@ -5,7 +5,7 @@
 JDK_BASE_URL=${JDK_BASE_URL:-http://download.oracle.com/otn-pub/java/jdk/7u80-b15}
 JDK_URL=${JDK_URL:-$JDK_BASE_URL/jdk-7u80-linux-x64.tar.gz}
 JDK_FILE=${JDK_URL##*/}
-JAVA_HOME=/opt/$(echo $JDK_FILE | sed -e 's|jdk-\([0-9]\)u\([0-9][0-9]\).*|jdk1.\1.0_\2|')
+JAVA_HOME=/opt/$(echo $JDK_FILE | sed -e 's|jdk-\([0-9]\)u\([0-9]\{1,3\}\).*|jdk1.\1.0_\2|')
 
 MYSQL_PASSWORD=admin
 
@@ -13,11 +13,10 @@ SONAR_DB_NAME=sonar
 SONAR_DB_USER=sonar
 SONAR_DB_PASS=sonar
 
-SONAR_VERSION=5.2
-SONAR_NAME=sonarqube-$SONAR_VERSION
-SONAR_DIR=/opt/$SONAR_NAME
-SONAR_ZIP=$SONAR_NAME.zip
-SONAR_URL=https://sonarsource.bintray.com/Distribution/sonarqube/$SONAR_ZIP
+SONAR_URL=${SONAR_URL:-https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-5.2.zip}
+SONAR_FILE=${SONAR_URL##*/}
+SONAR_DIR=/opt/${SONAR_FILE%.*}
+
 SONAR_USER=sonar
 SONAR_GROUP=sonar
 
@@ -74,10 +73,10 @@ fi
 
 # Install SonarQube zip file
 if [ ! -d $SONAR_DIR ]; then
-    if [ ! -f /tmp/$SONAR_ZIP ]; then
+    if [ ! -f /tmp/$SONAR_FILE ]; then
         wget -q --no-proxy $SONAR_URL -P /tmp
     fi
-    unzip -q /tmp/$SONAR_ZIP -d /opt
+    unzip -q /tmp/$SONAR_FILE -d /opt
 fi
 
 chown -R $SONAR_USER:$SONAR_GROUP $SONAR_DIR
