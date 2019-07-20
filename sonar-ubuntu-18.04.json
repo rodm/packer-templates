@@ -1,0 +1,111 @@
+{
+  "variables": {
+    "iso_checksum": "a2cb36dc010d98ad9253ea5ad5a07fd6b409e3412c48f1860536970b073c98f5",
+    "iso_url": "http://cdimage.ubuntu.com/releases/18.04/release/ubuntu-18.04.2-server-amd64.iso",
+    "iso_checksum_url": "http://cdimage.ubuntu.com/releases/18.04/release/SHA256SUMS",
+    "disk_size": "8000",
+    "network_device": "vmxnet3",
+    "network_name": "VM Network",
+    "jdk_url": "",
+    "sonar_url": ""
+  },
+  "builders": [
+    {
+      "type": "vmware-iso",
+      "guest_os_type": "ubuntu-64",
+      "iso_url": "{{user `iso_url`}}",
+      "iso_checksum_type": "sha256",
+      "iso_checksum_url": "{{user `iso_checksum_url`}}",
+      "tools_upload_flavor": "linux",
+      "tools_upload_path" : "/tmp/{{.Flavor}}.iso",
+      "http_directory": "http",
+      "headless": false,
+      "boot_wait": "10s",
+      "boot_command": [
+        "<esc><wait>",
+        "<esc><wait>",
+        "<enter><wait>",
+        "/install/vmlinuz <wait>",
+        "auto ",
+        "console-setup/ask_detect=false ",
+        "debconf/frontend=noninteractive ",
+        "debian-installer=en_US ",
+        "fb=false ",
+        "hostname={{.Name}} ",
+        "initrd=/install/initrd.gz ",
+        "kbd-chooser/method=us ",
+        "keyboard-configuration/modelcode=SKIP ",
+        "keyboard-configuration/layout=USA ",
+        "keyboard-configuration/variant=USA ",
+        "locale=en_US ",
+        "noapic ",
+        "preseed/url=http://{{.HTTPIP}}:{{.HTTPPort}}/sonar-ubuntu-18.04-preseed.cfg<wait>",
+        " -- <enter>"
+      ],
+      "disk_size": "{{user `disk_size`}}",
+      "disk_type_id": "4",
+      "ssh_username": "sonar",
+      "ssh_password": "sonar",
+      "ssh_port": 22,
+      "ssh_wait_timeout": "600s",
+      "shutdown_command": "echo 'shutdown -P now' > shutdown.sh; echo 'sonar' | sudo -S sh 'shutdown.sh'",
+      "vm_name": "sonar",
+      "vmdk_name": "disk",
+      "vmx_data": {
+        "memsize": "2048",
+        "numvcpus": "1"
+      },
+      "vmx_data_post": {
+        "ethernet0.virtualDev": "{{user `network_device`}}",
+        "ethernet0.networkName": "{{user `network_name`}}",
+        "ethernet0.uptCompatibility": "TRUE"
+      },
+      "output_directory": "build"
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "file",
+      "source": "scripts/support/sonar",
+      "destination": "/tmp/sonar"
+    },
+    {
+      "type": "file",
+      "source": "scripts/linux/support/limits-sonarqube.conf",
+      "destination": "/tmp/limits-sonarqube.conf"
+    },
+    {
+      "type": "file",
+      "source": "scripts/linux/support/sysctl-sonarqube.conf",
+      "destination": "/tmp/sysctl-sonarqube.conf"
+    },
+    {
+      "type": "shell",
+      "scripts": [
+        "scripts/base.sh",
+        "scripts/virtualbox.sh",
+        "scripts/linux/vmware.sh",
+        "scripts/network.sh",
+        "scripts/linux/sonar.sh",
+        "scripts/cleanup.sh",
+        "scripts/zerodisk.sh"
+      ],
+      "environment_vars": [
+        "JDK_URL={{user `jdk_url`}}",
+        "SONAR_URL={{user `sonar_url`}}"
+      ],
+      "override": {
+        "vmware-iso": {
+          "execute_command": "echo 'sonar' | {{.Vars}} sudo -E -S sh '{{.Path}}'"
+        }
+      }
+    }
+  ],
+  "post-processors": [
+    {
+      "type": "compress",
+      "output": "sonar-ubuntu-18.04.tar.gz",
+      "keep_input_artifact": true
+    }
+  ]
+}
