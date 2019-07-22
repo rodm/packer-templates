@@ -12,6 +12,8 @@ if [ -f /etc/redhat-release ]; then
     systemctl enable docker
     systemctl start docker
 else
+    DEBIAN_FRONTEND=noninteractive
+    export DEBIAN_FRONTEND
     apt-get update
     apt-get install -y apt-transport-https
     apt-get install -y ca-certificates
