@@ -5,9 +5,8 @@ if [ ! $PACKER_BUILDER_TYPE = vmware-iso -a ! $PACKER_BUILDER_TYPE = vmware-vmx 
 fi
 
 if [ -f /etc/redhat-release ]; then
-    yum -y install perl fuse-libs
     yum -y install kernel-devel-`uname -r`
-    yum -y install gcc make gcc-c++ zlib-devel openssl-devel readline-devel perl dkms fuse-utils nfs-utils
+    yum -y install gcc make gcc-c++ zlib-devel openssl-devel readline-devel perl dkms fuse fuse-devel nfs-utils
 fi
 
 # Install the VMWare Tools from a Linux ISO.

@@ -1,0 +1,92 @@
+{
+  "variables": {
+    "iso_url": "CentOS-7-x86_64-Minimal-2003.iso",
+    "iso_checksum": "sha256:659691c28a0e672558b003d223f83938f254b39875ee7559d1a4a14c79173193",
+    "guest_additions_url": "http://download.virtualbox.org/virtualbox/6.1.10/VBoxGuestAdditions_6.1.10.iso",
+    "guest_additions_sha256": "62a0c6715bee164817a6f58858dec1d60f01fd0ae00a377a75bbf885ddbd0a61"
+  },
+  "builders": [
+    {
+      "type": "virtualbox-iso",
+      "guest_os_type": "RedHat_64",
+      "iso_checksum": "{{user `iso_checksum`}}",
+      "iso_url": "{{user `iso_url`}}",
+      "guest_additions_url": "{{user `guest_additions_url`}}",
+      "guest_additions_sha256": "{{user `guest_additions_sha256`}}",
+      "guest_additions_path": "/tmp/VBoxGuestAdditions.iso",
+      "http_directory": "http",
+      "headless": false,
+      "boot_wait": "10s",
+      "boot_command": [
+        "<tab> text ks=http://{{.HTTPIP}}:{{.HTTPPort}}/vagrant-centos-7.8-ks.cfg<enter><wait>"
+      ],
+      "disk_size": 20480,
+      "ssh_username": "vagrant",
+      "ssh_password": "vagrant",
+      "ssh_port": 22,
+      "ssh_wait_timeout": "15m",
+      "shutdown_command": "echo 'vagrant' | sudo -S /sbin/halt -h -p",
+      "vm_name": "centos7_8",
+      "virtualbox_version_file": ".vbox_version",
+      "vboxmanage": [
+        [ "modifyvm", "{{.Name}}", "--memory", "512" ],
+        [ "modifyvm", "{{.Name}}", "--cpus", "2" ]
+      ]
+    },
+    {
+      "type": "vmware-iso",
+      "guest_os_type": "centos-64",
+      "iso_checksum": "{{user `iso_checksum`}}",
+      "iso_url": "{{user `iso_url`}}",
+      "tools_upload_flavor": "linux",
+      "tools_upload_path" : "/tmp/{{.Flavor}}.iso",
+      "http_directory": "http",
+      "headless": false,
+      "boot_wait": "10s",
+      "boot_command": [
+        "<tab> text ks=http://{{.HTTPIP}}:{{.HTTPPort}}/vagrant-centos-7.8-ks.cfg<enter><wait>"
+      ],
+      "disk_size": 20480,
+      "ssh_username": "vagrant",
+      "ssh_password": "vagrant",
+      "ssh_port": 22,
+      "ssh_wait_timeout": "15m",
+      "shutdown_command": "echo 'vagrant' | sudo -S /sbin/halt -h -p",
+      "vm_name": "centos7_8",
+      "vmdk_name": "disk",
+      "vmx_data": {
+        "memsize": "512",
+        "numvcpus": "2",
+        "cpuid.coresPerSocket": "1"
+      }
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "scripts": [
+        "scripts/base.sh",
+        "scripts/linux/sshd.sh",
+        "scripts/vagrant.sh",
+        "scripts/virtualbox.sh",
+        "scripts/linux/vmware.sh",
+        "scripts/cleanup.sh",
+        "scripts/zerodisk.sh"
+      ],
+      "override": {
+        "virtualbox-iso": {
+          "execute_command": "echo 'vagrant' | {{.Vars}} sudo -E -S sh '{{.Path}}'"
+        },
+        "vmware-iso": {
+          "execute_command": "echo 'vagrant' | {{.Vars}} sudo -E -S sh '{{.Path}}'"
+        }
+      }
+    }
+  ],
+  "post-processors": [
+    {
+      "type": "vagrant",
+      "output": "centos-7.8-x64-{{.Provider}}.box"
+    }
+  ]
+}
