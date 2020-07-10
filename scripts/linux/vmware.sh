@@ -6,7 +6,18 @@ fi
 
 if [ -f /etc/redhat-release ]; then
     yum -y install kernel-devel-`uname -r`
-    yum -y install gcc make gcc-c++ zlib-devel openssl-devel readline-devel perl dkms fuse fuse-devel nfs-utils
+    yum -y install bzip2
+    yum -y install tar
+    yum -y install gcc
+    yum -y install make
+    yum -y install perl
+    yum -y install zlib-devel
+    yum -y install openssl-devel
+    yum -y install readline-devel
+    yum -y install fuse
+    yum -y install fuse-devel
+    yum -y install nfs-utils
+    yum -y install dkms
 fi
 
 # Install the VMWare Tools from a Linux ISO.
