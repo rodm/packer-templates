@@ -1,4 +1,4 @@
 #!/bin/sh
 
-Remove-Item -Path "C:\Users\vagrant\VBoxGuestAdditions.iso" -Force -ErrorAction SilentlyContinue
-Remove-Item -Path "C:\Users\vagrant\windows.iso" -Force -ErrorAction SilentlyContinue
+Remove-Item -Path "${env:USERPROFILE}\VBoxGuestAdditions.iso" -Force -ErrorAction SilentlyContinue
+Remove-Item -Path "${env:USERPROFILE}\windows.iso" -Force -ErrorAction SilentlyContinue

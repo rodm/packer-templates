@@ -3,7 +3,7 @@
 if ($env:PACKER_BUILDER_TYPE -eq "virtualbox-iso") {
     Write-Host "Installing VirtualBox Guest Additions"
 
-    $imagePath = "C:\Users\vagrant\VBoxGuestAdditions.iso"
+    $imagePath = "${env:USERPROFILE}\VBoxGuestAdditions.iso"
     $driveLetter = (Mount-DiskImage -ImagePath $imagePath | Get-Volume).DriveLetter
     $certUtil = "${driveLetter}:\cert\VBoxCertUtil.exe"
 

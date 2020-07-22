@@ -1,0 +1,88 @@
+{
+  "variables": {
+    "iso_url": "https://software-download.microsoft.com/download/pr/17763.737.190906-2324.rs5_release_svc_refresh_SERVER_EVAL_x64FRE_en-us_1.iso",
+    "iso_checksum": "sha256:549bca46c055157291be6c22a3aaaed8330e78ef4382c99ee82c896426a1cee1",
+    "disk_size": "24000",
+    "network_device": "vmxnet3",
+    "network_name": "VM Network",
+    "jdk_url": "",
+    "agent_url": "",
+    "restart_timeout": "5m",
+    "winrm_timeout": "2h"
+  },
+  "builders": [
+    {
+      "type": "vmware-iso",
+      "guest_os_type": "windows9srv-64",
+      "iso_url": "{{user `iso_url`}}",
+      "iso_checksum": "{{user `iso_checksum`}}",
+      "tools_upload_flavor": "windows",
+      "tools_upload_path" : "{{.Flavor}}.iso",
+      "headless": false,
+      "boot_wait": "2m",
+      "communicator": "winrm",
+      "cpus": 2,
+      "disk_adapter_type": "lsisas1068",
+      "disk_size": "{{user `disk_size`}}",
+      "disk_type_id": 4,
+      "floppy_files": [
+        "./files/windows/2019/buildagent/Autounattend.xml",
+        "./files/windows/2019/buildagent/unattend.xml",
+        "./scripts/windows/disable-winrm.ps1",
+        "./scripts/windows/enable-winrm.ps1",
+        "./scripts/windows/sysprep.bat"
+      ],
+      "memory": 2048,
+      "shutdown_command": "a:/sysprep.bat",
+      "version": 13,
+      "vm_name": "buildagent",
+      "vmdk_name": "disk",
+      "vmx_data": {
+        "RemoteDisplay.vnc.enabled": "false",
+        "RemoteDisplay.vnc.port": "5900"
+      },
+      "vmx_data_post": {
+        "ethernet0.virtualDev": "{{user `network_device`}}",
+        "ethernet0.networkName": "{{user `network_name`}}",
+        "ethernet0.uptCompatibility": "TRUE"
+      },
+      "vnc_port_max": 5980,
+      "vnc_port_min": 5900,
+      "winrm_username": "builder",
+      "winrm_password": "builder",
+      "winrm_timeout": "{{user `winrm_timeout`}}"
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "powershell",
+      "scripts": [
+        "./scripts/windows/vmware.ps1"
+      ]
+    },
+    {
+      "type": "windows-restart",
+      "restart_timeout": "{{user `restart_timeout`}}"
+    },
+    {
+      "type": "powershell",
+      "scripts": [
+        "./scripts/windows/windows.ps1",
+        "./scripts/windows/teamcity-agent.ps1",
+        "./scripts/windows/cleanup.ps1",
+        "./scripts/windows/zerodisk.ps1"
+      ],
+      "environment_vars": [
+        "JDK_URL={{user `jdk_url`}}",
+        "AGENT_URL={{user `agent_url`}}"
+      ]
+    }
+  ],
+  "post-processors": [
+    {
+      "type": "compress",
+      "output": "buildagent-windows-2019.tar.gz",
+      "keep_input_artifact": true
+    }
+  ]
+}
