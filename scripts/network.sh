@@ -2,7 +2,7 @@
 
 . /etc/lsb-release
 
-if [ "${DISTRIB_CODENAME}" = "bionic" ]; then
+if [ "${DISTRIB_CODENAME}" = "bionic" -o "${DISTRIB_CODENAME}" = "focal" ]; then
     cat > /etc/netplan/01-netcfg.yaml <<EOF
 network:
   version: 2

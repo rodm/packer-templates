@@ -1,0 +1,98 @@
+{
+  "variables": {
+    "iso_url": "http://cdimage.ubuntu.com/ubuntu-legacy-server/releases/20.04/release/ubuntu-20.04-legacy-server-amd64.iso",
+    "iso_checksum": "sha256:36f15879bd9dfd061cd588620a164a82972663fdd148cce1f70d57d314c21b73",
+    "username": "builder",
+    "password": "builder",
+    "disk_size": "16000",
+    "network_device": "vmxnet3",
+    "network_name": "VM Network",
+    "jdk_base_url": ""
+  },
+  "builders": [
+    {
+      "type": "vmware-iso",
+      "guest_os_type": "ubuntu-64",
+      "iso_checksum": "{{user `iso_checksum`}}",
+      "iso_url": "{{user `iso_url`}}",
+      "tools_upload_flavor": "linux",
+      "tools_upload_path" : "/tmp/{{.Flavor}}.iso",
+      "http_directory": "http",
+      "headless": false,
+      "boot_wait": "10s",
+      "boot_command": [
+        "<esc><wait>",
+        "<esc><wait>",
+        "<enter><wait>",
+        "/install/vmlinuz <wait>",
+        "auto <wait>",
+        "console-setup/ask_detect=false ",
+        "debconf/frontend=noninteractive ",
+        "debian-installer=en_US ",
+        "fb=false ",
+        "hostname={{.Name}} ",
+        "initrd=/install/initrd.gz ",
+        "kbd-chooser/method=us ",
+        "keyboard-configuration/modelcode=SKIP ",
+        "keyboard-configuration/layout=USA ",
+        "keyboard-configuration/variant=USA ",
+        "locale=en_US ",
+        "passwd/username={{user `username`}} ",
+        "passwd/user-fullname={{user `username`}} ",
+        "passwd/user-password={{user `password`}} ",
+        "passwd/user-password-again={{user `password`}} ",
+        "noapic ",
+        "preseed/url=http://{{.HTTPIP}}:{{.HTTPPort}}/ubuntu-20.04-preseed.cfg ",
+        " -- <enter>"
+      ],
+      "disk_size": "{{user `disk_size`}}",
+      "disk_type_id": "4",
+      "ssh_username": "{{user `username`}}",
+      "ssh_password": "{{user `password`}}",
+      "ssh_port": 22,
+      "ssh_pty": true,
+      "ssh_timeout": "10m",
+      "shutdown_command": "echo '{{user `password`}}' | sudo -S /sbin/halt -h -p",
+      "vm_name": "buildagent",
+      "vmdk_name": "disk",
+      "cpus": 1,
+      "memory": 512,
+      "cores": 1,
+      "vmx_data_post": {
+        "ethernet0.virtualDev": "{{user `network_device`}}",
+        "ethernet0.networkName": "{{user `network_name`}}",
+        "ethernet0.uptCompatibility": "TRUE"
+      },
+      "output_directory": "build"
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "scripts": [
+        "scripts/base.sh",
+        "scripts/vmware.sh",
+        "scripts/network.sh",
+        "scripts/linux/docker.sh",
+        "scripts/teamcity-agent.sh",
+        "scripts/cleanup.sh",
+        "scripts/zerodisk.sh"
+      ],
+      "environment_vars": [
+        "JDK_BASE_URL={{user `jdk_base_url`}}"
+      ],
+      "override": {
+        "vmware-iso": {
+          "execute_command": "echo '{{user `password`}}' | {{.Vars}} sudo -E -S sh '{{.Path}}'"
+        }
+      }
+    }
+  ],
+  "post-processors": [
+    {
+      "type": "compress",
+      "output": "buildagent-ubuntu-20.04.tar.gz",
+      "keep_input_artifact": true
+    }
+  ]
+}

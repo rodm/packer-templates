@@ -18,7 +18,6 @@ else
     apt-get install -y apt-transport-https
     apt-get install -y ca-certificates
     apt-get install -y software-properties-common
-    apt-get install -y software-properties-common
     apt-get install -y curl
     curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
     add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
