@@ -1,0 +1,76 @@
+{
+  "variables": {
+    "iso_url": "CentOS-8.2.2004-x86_64-minimal.iso",
+    "iso_checksum": "sha256:47ab14778c823acae2ee6d365d76a9aed3f95bb8d0add23a06536b58bb5293c0",
+    "username": "builder",
+    "password": "builder",
+    "disk_size": "16000",
+    "network_device": "vmxnet3",
+    "network_name": "VM Network",
+    "jdk_base_url": ""
+  },
+  "builders": [
+    {
+      "type": "vmware-iso",
+      "guest_os_type": "centos7-64",
+      "version": "13",
+      "iso_checksum": "{{user `iso_checksum`}}",
+      "iso_url": "{{user `iso_url`}}",
+      "tools_upload_flavor": "linux",
+      "tools_upload_path" : "/tmp/{{.Flavor}}.iso",
+      "http_directory": "http",
+      "headless": false,
+      "boot_wait": "10s",
+      "boot_command": [
+        "<tab> text ks=http://{{.HTTPIP}}:{{.HTTPPort}}/buildagent-centos-8.2-ks.cfg<enter><wait>"
+      ],
+      "disk_size": "{{user `disk_size`}}",
+      "disk_type_id": "4",
+      "ssh_username": "{{user `username`}}",
+      "ssh_password": "{{user `password`}}",
+      "ssh_port": 22,
+      "ssh_pty": true,
+      "ssh_timeout": "10m",
+      "shutdown_command": "echo '{{user `password`}}' | sudo -S /sbin/halt -h -p",
+      "vm_name": "buildagent",
+      "vmdk_name": "disk",
+      "cpus": 2,
+      "memory": 1024,
+      "cores": 1,
+      "vmx_data_post": {
+        "ethernet0.virtualDev": "{{user `network_device`}}",
+        "ethernet0.networkName": "{{user `network_name`}}",
+        "ethernet0.uptCompatibility": "TRUE"
+      },
+      "output_directory": "build"
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "scripts": [
+        "scripts/base.sh",
+        "scripts/linux/sshd.sh",
+        "scripts/linux/vmware.sh",
+        "scripts/teamcity-agent.sh",
+        "scripts/cleanup.sh",
+        "scripts/zerodisk.sh"
+      ],
+      "environment_vars": [
+        "JDK_BASE_URL={{user `jdk_base_url`}}"
+      ],
+      "override": {
+        "vmware-iso": {
+          "execute_command": "echo '{{user `password`}}' | {{.Vars}} sudo -E -S sh '{{.Path}}'"
+        }
+      }
+    }
+  ],
+  "post-processors": [
+    {
+      "type": "compress",
+      "output": "buildagent-centos-8.2.tar.gz",
+      "keep_input_artifact": true
+    }
+  ]
+}
