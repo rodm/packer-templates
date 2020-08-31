@@ -66,17 +66,17 @@
   "provisioners": [
     {
       "type": "file",
-      "source": "scripts/support/sonar",
+      "source": "files/linux/sonar/sonar",
       "destination": "/tmp/sonar"
     },
     {
       "type": "file",
-      "source": "scripts/linux/support/limits-sonarqube.conf",
+      "source": "files/linux/sonar/limits-sonarqube.conf",
       "destination": "/tmp/limits-sonarqube.conf"
     },
     {
       "type": "file",
-      "source": "scripts/linux/support/sysctl-sonarqube.conf",
+      "source": "files/linux/sonar/sysctl-sonarqube.conf",
       "destination": "/tmp/sysctl-sonarqube.conf"
     },
     {

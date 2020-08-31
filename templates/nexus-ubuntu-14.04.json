@@ -113,12 +113,12 @@
   "provisioners": [
     {
       "type": "file",
-      "source": "scripts/support/nexus-server",
+      "source": "files/linux/nexus/nexus-server",
       "destination": "/tmp/nexus-server"
     },
     {
       "type": "file",
-      "source": "scripts/support/server.sh",
+      "source": "files/linux/nexus/server.sh",
       "destination": "/tmp/server.sh"
     },
     {

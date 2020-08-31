@@ -105,7 +105,7 @@
   "provisioners": [
     {
       "type": "file",
-      "source": "scripts/support/sonar",
+      "source": "files/linux/sonar/sonar",
       "destination": "/tmp/sonar"
     },
     {

@@ -64,17 +64,17 @@
   "provisioners": [
     {
       "type": "file",
-      "source": "scripts/alpine/support/agent.sh",
+      "source": "files/alpine/teamcity/agent.sh",
       "destination": "/tmp/agent.sh"
     },
     {
       "type": "file",
-      "source": "scripts/alpine/support/teamcity-agent.conf",
+      "source": "files/alpine/teamcity/teamcity-agent.conf",
       "destination": "/tmp/teamcity-agent.conf"
     },
     {
       "type": "file",
-      "source": "scripts/alpine/support/teamcity-agent.init",
+      "source": "files/alpine/teamcity/teamcity-agent.init",
       "destination": "/tmp/teamcity-agent.init"
     },
     {

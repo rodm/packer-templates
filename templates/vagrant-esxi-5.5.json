@@ -45,12 +45,12 @@
     },
     {
       "type": "file",
-      "source": "scripts/esxi/support/local.sh",
+      "source": "files/esxi/local.sh",
       "destination": "/etc/rc.local.d/local.sh"
     },
     {
       "type": "file",
-      "source": "scripts/esxi/support/vagrant.pub",
+      "source": "files/esxi/vagrant.pub",
       "destination": "/etc/ssh/keys-root/authorized_keys"
     }
   ],

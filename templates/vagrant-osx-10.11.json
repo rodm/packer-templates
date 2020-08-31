@@ -76,7 +76,7 @@
   "provisioners": [
     {
       "destination": "/private/tmp/set_kcpassword.py",
-      "source": "scripts/osx/support/set_kcpassword.py",
+      "source": "files/osx/set_kcpassword.py",
       "type": "file"
     },
     {
