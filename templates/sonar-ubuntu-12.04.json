@@ -111,13 +111,13 @@
     {
       "type": "shell",
       "scripts": [
-        "scripts/base.sh",
-        "scripts/puppet.sh",
-        "scripts/virtualbox.sh",
-        "scripts/vmware.sh",
-        "scripts/sonar.sh",
-        "scripts/cleanup.sh",
-        "scripts/zerodisk.sh"
+        "scripts/linux/base.sh",
+        "scripts/linux/puppet.sh",
+        "scripts/linux/virtualbox.sh",
+        "scripts/linux/vmware.sh",
+        "scripts/linux/sonar-mysql.sh",
+        "scripts/linux/cleanup.sh",
+        "scripts/linux/zerodisk.sh"
       ],
       "environment_vars": [
         "JDK_URL={{user `jdk_url`}}",

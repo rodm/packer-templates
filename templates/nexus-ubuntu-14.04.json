@@ -125,12 +125,12 @@
       "type": "shell",
       "execute_command": "echo 'nexus' | {{.Vars}} sudo -E -S sh '{{.Path}}'",
       "scripts": [
-        "scripts/base.sh",
-        "scripts/virtualbox.sh",
-        "scripts/vmware.sh",
-        "scripts/nexus.sh",
-        "scripts/cleanup.sh",
-        "scripts/zerodisk.sh"
+        "scripts/linux/base.sh",
+        "scripts/linux/virtualbox.sh",
+        "scripts/linux/vmware.sh",
+        "scripts/linux/nexus.sh",
+        "scripts/linux/cleanup.sh",
+        "scripts/linux/zerodisk.sh"
       ],
       "environment_vars": [
         "JDK_URL={{user `jdk_url`}}",

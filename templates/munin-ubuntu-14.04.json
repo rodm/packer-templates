@@ -112,12 +112,12 @@
       "type": "shell",
       "execute_command": "echo 'munin' | {{.Vars}} sudo -E -S sh '{{.Path}}'",
       "scripts": [
-        "scripts/base.sh",
-        "scripts/virtualbox.sh",
-        "scripts/vmware.sh",
-        "scripts/munin.sh",
-        "scripts/cleanup.sh",
-        "scripts/zerodisk.sh"
+        "scripts/linux/base.sh",
+        "scripts/linux/virtualbox.sh",
+        "scripts/linux/vmware.sh",
+        "scripts/linux/munin.sh",
+        "scripts/linux/cleanup.sh",
+        "scripts/linux/zerodisk.sh"
       ]
     }
   ],

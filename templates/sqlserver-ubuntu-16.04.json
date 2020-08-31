@@ -68,12 +68,12 @@
     {
       "type": "shell",
       "scripts": [
-        "scripts/base.sh",
-        "scripts/vmware.sh",
-        "scripts/network.sh",
+        "scripts/linux/base.sh",
+        "scripts/linux/vmware.sh",
+        "scripts/linux/network.sh",
         "scripts/linux/sqlserver.sh",
-        "scripts/cleanup.sh",
-        "scripts/zerodisk.sh"
+        "scripts/linux/cleanup.sh",
+        "scripts/linux/zerodisk.sh"
       ],
       "environment_vars": [
         "MSSQL_SA_PASSWORD={{user `mssql_sa_password`}}",

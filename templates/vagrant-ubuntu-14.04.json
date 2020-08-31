@@ -102,13 +102,13 @@
     {
       "type": "shell",
       "scripts": [
-        "scripts/base.sh",
-        "scripts/puppet.sh",
-        "scripts/vagrant.sh",
-        "scripts/virtualbox.sh",
+        "scripts/linux/base.sh",
+        "scripts/linux/puppet.sh",
+        "scripts/linux/vagrant.sh",
+        "scripts/linux/virtualbox.sh",
         "scripts/linux/vmware.sh",
-        "scripts/cleanup.sh",
-        "scripts/zerodisk.sh"
+        "scripts/linux/cleanup.sh",
+        "scripts/linux/zerodisk.sh"
       ],
       "override": {
         "virtualbox-iso": {

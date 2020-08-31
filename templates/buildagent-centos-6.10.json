@@ -50,11 +50,11 @@
     {
       "type": "shell",
       "scripts": [
-        "scripts/base.sh",
-        "scripts/vmware.sh",
-        "scripts/teamcity-agent.sh",
-        "scripts/cleanup.sh",
-        "scripts/zerodisk.sh"
+        "scripts/linux/base.sh",
+        "scripts/linux/vmware.sh",
+        "scripts/linux/teamcity-agent.sh",
+        "scripts/linux/cleanup.sh",
+        "scripts/linux/zerodisk.sh"
       ],
       "environment_vars": [
         "JDK_BASE_URL={{user `jdk_base_url`}}"

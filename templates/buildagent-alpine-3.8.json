@@ -83,7 +83,7 @@
         "scripts/alpine/base.sh",
         "scripts/alpine/vmware.sh",
         "scripts/alpine/teamcity-agent.sh",
-        "scripts/zerodisk.sh"
+        "scripts/linux/zerodisk.sh"
       ],
       "environment_vars": [
         "JDK_URL={{user `jdk_url`}}",

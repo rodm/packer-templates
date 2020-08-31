@@ -82,13 +82,13 @@
     {
       "type": "shell",
       "scripts": [
-        "scripts/base.sh",
-        "scripts/virtualbox.sh",
+        "scripts/linux/base.sh",
+        "scripts/linux/virtualbox.sh",
         "scripts/linux/vmware.sh",
-        "scripts/network.sh",
+        "scripts/linux/network.sh",
         "scripts/linux/sonar.sh",
-        "scripts/cleanup.sh",
-        "scripts/zerodisk.sh"
+        "scripts/linux/cleanup.sh",
+        "scripts/linux/zerodisk.sh"
       ],
       "environment_vars": [
         "JDK_URL={{user `jdk_url`}}",
