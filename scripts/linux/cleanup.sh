@@ -2,7 +2,8 @@
 
 # Clean up unneeded packages.
 if [ -f /etc/redhat-release ]; then
-    yum -y remove gcc-c++ zlib-devel openssl-devel readline-devel dkms nfs-utils
+    yum -y remove gcc make perl elfutils-libelf-devel dkms
+    yum -y remove zlib-devel openssl-devel readline-devel fuse-devel nfs-utils
     yum -y clean all
 else
     apt-get -y remove build-essential
