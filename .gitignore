@@ -1,3 +1,6 @@
-*.box
-packer_cache
+
+# Packer
+packer_cache/
 logs/
+packer.conf
+*.box
