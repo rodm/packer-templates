@@ -47,11 +47,17 @@
   ],
   "provisioners": [
     {
+      "type": "file",
+      "source": "files/ssh",
+      "destination": "/tmp"
+    },
+    {
       "type": "shell",
       "scripts": [
         "scripts/linux/base.sh",
         "scripts/linux/sshd.sh",
         "scripts/linux/vmware.sh",
+        "scripts/linux/ssh.sh",
         "scripts/linux/teamcity-agent.sh",
         "scripts/linux/cleanup.sh",
         "scripts/linux/zerodisk.sh"
